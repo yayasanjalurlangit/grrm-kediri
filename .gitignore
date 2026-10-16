@@ -1,0 +1,29 @@
+# ---- Dependencies ----
+node_modules/
+.pnp
+.pnp.js
+
+# ---- Cloudflare / Wrangler ----
+.wrangler/
+.dev.vars
+.env
+.env.local
+.env.*.local
+
+# ---- Secrets & config pribadi ----
+rahasia-*.txt
+*.secret
+credentials.json
+client_secret_*.json
+
+# ---- OS & Editor ----
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# ---- Build output (kalau ada nanti) ----
+dist/
+build/

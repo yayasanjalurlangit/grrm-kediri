@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeri - GRRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+    <!-- GLightbox CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+</head>
+<body class="ui-balanced">
+
+  <a href="#main" class="skip-link">Lewati ke konten utama</a>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="GRRM - Beranda">
+        <img src="assets/images/logo-grrm.png" alt="Logo GRRM" class="brand-logo" />
+        <div class="brand-text">
+          <span class="brand-name">GRRM</span>
+          <span class="brand-sub">Resik Resik Masjid</span>
+        </div>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="siteNav" aria-label="Navigasi utama">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="struktur-organisasi.html">Struktur</a></li>
+          <li><a href="galeri.html" class="active" aria-current="page">Galeri</a></li>
+          <li><a href="pengumuman.html">Pengumuman</a></li>
+          <li><a href="lain-lain.html">Lain-lain</a></li>
+          <li><a href="kontak.html">Kontak</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Galeri</h1>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Galeri</span>
+      </nav>
+    </div>
+  </section>
+
+  <main id="main" class="section">
+    <div class="container">
+
+      <div class="section-header section-header-left">
+        <h2>Dokumentasi</h2>
+        <p class="section-desc">Foto kegiatan GRRM per album.</p>
+      </div>
+
+      <div class="filter-bar" role="group" aria-label="Filter album">
+        <span class="filter-label">Tahun:</span>
+        <button class="filter-chip active" data-filter="all" type="button">Semua</button>
+      </div>
+
+      <div class="empty-state" id="galeriEmpty" hidden>
+        <p>Belum ada album untuk filter ini.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+
+      <div class="footer-col footer-logo-col">
+        <img src="assets/images/logo-grrm.png" alt="Logo GRRM" class="footer-logo" />
+      </div>
+
+      <div class="footer-col">
+        <h4>GRRM</h4>
+        <p>Gerakan Resik Resik Masjid — bersama membangun lingkungan yang bersih.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="news.html">News</a></li>
+          <li><a href="galeri.html">Galeri</a></li>
+          <li><a href="pengumuman.html">Pengumuman</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Kontak</h4>
+        <p>Kediri, Jawa Timur</p>
+        <p>info@grrm.id</p>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> GRRM — Gerakan Resik Resik Masjid.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/blogger-api.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>  
+  <script src="assets/js/glightbox-init.js"></script>                                      
+  <script src="assets/js/app-galeri.js"></script>
+</body>
+</html>
