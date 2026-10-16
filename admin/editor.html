@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Editor - Admin GRRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+<body>
+
+  <!-- ============ LAYAR 1: CEK LOGIN ============ -->
+  <div id="loadingScreen" class="admin-login">
+    <div class="admin-login-card">
+      <p>Memeriksa status login…</p>
+    </div>
+  </div>
+
+  <!-- ============ LAYAR 2: LOGIN ============ -->
+  <div id="loginScreen" class="admin-login hidden">
+    <div class="admin-login-card">
+      <img src="../assets/images/logo-grrm.png" alt="GRRM" class="logo" />
+      <h1>Admin Panel GRRM</h1>
+      <p>Silakan login dulu untuk mengakses editor.</p>
+      <a href="/api/auth/login" class="btn btn-google">Login dengan Google</a>
+    </div>
+  </div>
+
+  <!-- ============ LAYAR 3: EDITOR ============ -->
+  <div id="dashboardScreen" class="hidden">
+
+    <header class="admin-header">
+      <div class="admin-brand">
+        <img src="../assets/images/logo-grrm.png" alt="GRRM" />
+        <span>GRRM</span>
+        <span class="admin-tag">Editor</span>
+      </div>
+      <div class="admin-header-right">
+        <span class="admin-user-email">Masuk sebagai Admin</span>
+        <a href="index.html" class="btn btn-outline btn-sm">← Dashboard</a>
+        <button type="button" class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+
+      <div class="admin-card">
+        <h1 id="editorTitle">Buat Post Baru</h1>
+        <p class="subtitle" id="editorSubtitle">Tulis berita atau album galeri baru.</p>
+
+        <form id="postForm" novalidate>
+
+          <!-- Judul -->
+          <div class="form-group">
+            <label for="postTitle">Judul <span class="required">*</span></label>
+            <input
+              type="text"
+              id="postTitle"
+              name="title"
+              class="form-control"
+              placeholder="Contoh: Aksi Bersih-Bersih di Masjid Al-Hidayah"
+              required
+              maxlength="200"
+            />
+          </div>
+
+          <!-- Label -->
+          <div class="form-group">
+            <label for="postLabels">Label</label>
+            <input
+              type="text"
+              id="postLabels"
+              name="labels"
+              class="form-control"
+              placeholder="Pisahkan dengan koma. Contoh: Kegiatan, Berita"
+            />
+            <p class="form-hint">
+              Pilihan umum: <b>Kegiatan</b>, <b>Berita</b>, <b>Edukasi</b>, <b>Galeri</b>.
+              Untuk album foto, wajib ada label <b>Galeri</b>.
+            </p>
+          </div>
+
+          <!-- Konten -->
+          <div class="form-group">
+            <label for="postContent">Konten <span class="required">*</span></label>
+            <div class="editor-toolbar">
+              <button type="button" class="tool-btn" data-cmd="bold" title="Bold"><b>B</b></button>
+              <button type="button" class="tool-btn" data-cmd="italic" title="Italic"><i>I</i></button>
+              <button type="button" class="tool-btn" data-cmd="underline" title="Underline"><u>U</u></button>
+              <span class="tool-sep"></span>
+              <button type="button" class="tool-btn" data-cmd="insertUnorderedList" title="Bullet List">• List</button>
+              <button type="button" class="tool-btn" data-cmd="insertOrderedList" title="Numbered List">1. List</button>
+              <span class="tool-sep"></span>
+              <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="h2" title="Heading">H2</button>
+              <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="p" title="Paragraph">¶</button>
+              <span class="tool-sep"></span>
+              <button type="button" class="tool-btn" id="insertImageBtn" title="Sisipkan Gambar">🖼 Gambar</button>
+            </div>
+            <div
+              id="postContent"
+              class="form-control editor-area"
+              contenteditable="true"
+              data-placeholder="Tulis konten di sini…"
+            ></div>
+            <p class="form-hint">
+              Tip: Gunakan toolbar untuk memformat. Untuk galeri, sisipkan 3+ gambar.
+            </p>
+          </div>
+
+          <!-- Hidden ID untuk mode edit -->
+          <input type="hidden" id="postId" name="id" />
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <a href="index.html" class="btn btn-outline">Batal</a>
+            <button type="submit" class="btn btn-primary" id="saveBtn">Simpan Post</button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Status message -->
+      <div id="statusMsg" class="status-msg hidden"></div>
+
+    </main>
+
+  </div>
+
+  <script src="../assets/js/admin-common.js"></script>
+  <script src="../assets/js/admin-editor.js"></script>
+</body>
+</html>

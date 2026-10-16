@@ -150,7 +150,14 @@
 
     window.GRRM_BLOGGER.fetchPosts({ maxResults: 12, orderBy: 'published' })
       .then(function (res) {
-        allPosts = res.items;
+        /* Filter: buang post dengan label "galeri" (itu untuk album foto) */
+        allPosts = res.items.filter(function (post) {
+          if (!post.labels) return true;
+          return !post.labels.some(function (l) {
+            return String(l).trim().toLowerCase() === 'galeri';
+          });
+        });
+
         if (allPosts.length === 0) {
           renderError('Belum ada berita dipublikasikan.');
           return;
