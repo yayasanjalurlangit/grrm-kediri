@@ -124,17 +124,20 @@
     if (!confirm(`Hapus konten "${post.title}"?\nTindakan ini tidak bisa dibatalkan.`)) return;
 
     const row = btnEl.closest('.post-row');
+    const parent = row.parentElement; // Simpan referensi parent SEBELUM dihapus
+    
     row.style.opacity = '0.5';
     row.style.pointerEvents = 'none';
 
     try {
       await global.GRRM_ADMIN.api(`/api/blogger/posts?id=${post.id}`, { method: 'DELETE' });
-      row.remove();
+      
+      row.remove(); // Hapus elemen dari layar
       global.GRRM_DASHBOARD.showToast('Konten berhasil dihapus', 'success');
       
-      // Cek jika list kosong setelah dihapus
-      if (row.parentElement.children.length === 0) {
-        row.parentElement.innerHTML = '<div class="admin-empty"><p>Belum ada konten.</p></div>';
+      // Cek jika list kosong setelah dihapus (gunakan variabel parent yang disimpan tadi)
+      if (parent && parent.children.length === 0) {
+        parent.innerHTML = '<div class="admin-empty"><p>Belum ada konten.</p></div>';
       }
     } catch (e) {
       row.style.opacity = '1';
