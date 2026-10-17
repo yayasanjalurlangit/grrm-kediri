@@ -1,175 +1,223 @@
 /* =========================================================
-   GRRM - Admin Editor
-   Create / Edit post via Blogger proxy
+   GRRM - Admin Editor Logic (With Auto Image Compress)
    ========================================================= */
 
 (function (global) {
   'use strict';
 
   const $ = function (id) { return document.getElementById(id); };
-
-  let mode = 'create'; /* 'create' | 'edit' */
+  let mode = 'create'; 
   let editingId = null;
 
   /* ---------- Toast ---------- */
   function showToast(msg, type) {
-    let t = document.getElementById('adminToast');
+    let t = $('adminToast');
     if (!t) {
       t = document.createElement('div');
       t.id = 'adminToast';
+      t.className = 'admin-toast';
       document.body.appendChild(t);
     }
     t.className = 'admin-toast ' + (type || '');
     t.textContent = msg;
     t.classList.add('is-visible');
     clearTimeout(t._timer);
-    t._timer = setTimeout(function () {
-      t.classList.remove('is-visible');
-    }, 3500);
+    t._timer = setTimeout(() => t.classList.remove('is-visible'), 3000);
   }
 
-  /* ---------- Status message bawah form ---------- */
-  function setStatus(msg, type) {
-    const el = $('statusMsg');
-    if (!el) return;
-    if (!msg) { el.classList.add('hidden'); return; }
-    el.className = 'status-msg ' + (type || '');
-    el.textContent = msg;
-    el.classList.remove('hidden');
-  }
-
-  /* ---------- Toolbar: formatting commands ---------- */
+  /* ---------- Toolbar Formatting ---------- */
   function initToolbar() {
-    document.querySelectorAll('.tool-btn[data-cmd]').forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
+    document.querySelectorAll('.tool-btn[data-cmd]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
         e.preventDefault();
-        const cmd = btn.dataset.cmd;
-        const value = btn.dataset.value || null;
-        document.execCommand(cmd, false, value);
+        document.execCommand(btn.dataset.cmd, false, btn.dataset.value || null);
         $('postContent').focus();
       });
     });
 
-    /* Placeholder behavior untuk contenteditable */
     const area = $('postContent');
     if (area) {
-      area.addEventListener('input', function () {
+      area.addEventListener('input', () => {
         area.classList.toggle('is-empty', !area.textContent.trim());
       });
       area.classList.add('is-empty');
     }
   }
 
-  /* ---------- Tombol sisipkan gambar (placeholder — 4D.4) ---------- */
-  function initImageInsert() {
+  /* ---------- SISTEM UPLOAD & KOMPRESI GAMBAR ---------- */
+  function initImageUpload() {
     const btn = $('insertImageBtn');
-    if (!btn) return;
-    btn.addEventListener('click', function (e) {
+    const fileInput = $('imageUploadInput');
+    const btnText = $('imageBtnText');
+
+    // Klik tombol -> Buka file picker
+    btn.addEventListener('click', (e) => {
       e.preventDefault();
-      /* Nanti di 4D.4: upload ke R2 & sisipkan <img> */
-      const url = window.prompt('Masukkan URL gambar (sementara):');
-      if (!url) return;
-      document.execCommand('insertHTML', false,
-        '<img src="' + url + '" alt="" style="max-width:100%;border-radius:8px;margin:8px 0;">');
+      fileInput.click();
+    });
+
+    // Saat file dipilih
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        return showToast('File harus berupa gambar.', 'error');
+      }
+
+      // Ubah teks tombol jadi loading
+      btnText.textContent = 'Memproses...';
+      btn.disabled = true;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          // Proses kompresi
+          compressAndInsert(img, () => {
+            btnText.textContent = 'Upload Gambar';
+            btn.disabled = false;
+            fileInput.value = ''; // reset input
+          });
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
     });
   }
 
-  /* ---------- Load post untuk mode edit ---------- */
+  function compressAndInsert(img, callback) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let width = img.width;
+    let height = img.height;
+    const MAX_SIZE = 1200; // Maksimal lebar/tinggi 1200px
+
+    // Hitung rasio aspek
+    if (width > MAX_SIZE || height > MAX_SIZE) {
+      if (width > height) {
+        height = Math.round((height * MAX_SIZE) / width);
+        width = MAX_SIZE;
+      } else {
+        width = Math.round((width * MAX_SIZE) / height);
+        height = MAX_SIZE;
+      }
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // Konversi ke WebP (kualitas 80%)
+    // Fallback ke JPEG jika browser tidak support WebP
+    let mimeType = 'image/webp';
+    try {
+      if (canvas.toDataURL(mimeType).indexOf('data:image/webp') === -1) {
+        mimeType = 'image/jpeg';
+      }
+    } catch(err) {
+      mimeType = 'image/jpeg';
+    }
+
+    const base64Image = canvas.toDataURL(mimeType, 0.8);
+
+    // Sisipkan ke editor
+    document.execCommand('insertHTML', false,
+      `<img src="${base64Image}" alt="Gambar" style="max-width:100%;height:auto;border-radius:8px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,0.1);">`);
+    
+    showToast('Gambar berhasil dikompres & disisipkan!', 'success');
+    callback();
+  }
+
+  /* ---------- Load Data untuk Edit ---------- */
   async function loadPostForEdit(id) {
     mode = 'edit';
     editingId = id;
 
-    $('editorTitle').textContent = 'Edit Post';
-    $('editorSubtitle').textContent = 'Perbarui judul, label, atau konten.';
-    $('saveBtn').textContent = 'Perbarui Post';
-
-    setStatus('Memuat post…', '');
+    $('editorTitle').textContent = 'Edit Konten';
+    $('editorSubtitle').textContent = 'Perbarui judul, kategori, atau isi konten.';
+    $('saveBtn').textContent = 'Perbarui Konten';
 
     try {
-      const post = await global.GRRM_ADMIN.api(
-        '/api/blogger/posts?id=' + encodeURIComponent(id)
-      );
+      const post = await global.GRRM_ADMIN.api(`/api/blogger/posts?id=${encodeURIComponent(id)}`);
 
       $('postTitle').value = post.title || '';
-      $('postLabels').value = (post.labels || []).join(', ');
       $('postContent').innerHTML = post.content || '';
       $('postContent').classList.toggle('is-empty', !post.content);
       $('postId').value = post.id;
 
+      const labels = post.labels || [];
+      const standardCats = ['Kegiatan', 'Berita', 'Edukasi', 'Galeri', 'Pengumuman'];
+      
+      let primaryCat = 'Kegiatan';
+      let extraLabels = [];
+
+      labels.forEach(lbl => {
+        const match = standardCats.find(c => c.toLowerCase() === lbl.toLowerCase());
+        if (match) primaryCat = match;
+        else extraLabels.push(lbl);
+      });
+
+      $('postCategory').value = primaryCat;
+      $('postExtraLabels').value = extraLabels.join(', ');
+
       document.title = 'Edit: ' + (post.title || '') + ' - Admin GRRM';
-      setStatus('');
     } catch (e) {
-      console.error('[Editor] Load gagal', e);
-      setStatus('Gagal memuat post: ' + e.message, 'error');
+      showToast('Gagal memuat konten: ' + e.message, 'error');
     }
   }
 
-  /* ---------- Submit: create atau update ---------- */
+  /* ---------- Submit Form ---------- */
   async function onSubmit(e) {
     e.preventDefault();
 
     const title = $('postTitle').value.trim();
     const content = $('postContent').innerHTML.trim();
-    const labelsRaw = $('postLabels').value.trim();
+    const primaryCat = $('postCategory').value;
+    const extraLabelsRaw = $('postExtraLabels').value.trim();
 
-    /* Validasi */
-    if (!title) {
-      showToast('Judul wajib diisi.', 'error');
-      $('postTitle').focus();
-      return;
+    if (!title) return showToast('Judul wajib diisi.', 'error');
+    if (!content || content === '<br>') return showToast('Konten wajib diisi.', 'error');
+
+    let finalLabels = [primaryCat];
+    if (extraLabelsRaw) {
+      const extras = extraLabelsRaw.split(',').map(s => s.trim()).filter(Boolean);
+      extras.forEach(ex => {
+        if (!finalLabels.some(fl => fl.toLowerCase() === ex.toLowerCase())) {
+          finalLabels.push(ex);
+        }
+      });
     }
-    if (!content || content === '<br>') {
-      showToast('Konten wajib diisi.', 'error');
-      $('postContent').focus();
-      return;
-    }
 
-    const labels = labelsRaw
-      ? labelsRaw.split(',').map(function (l) { return l.trim(); }).filter(Boolean)
-      : [];
+    const payload = { title, content, labels: finalLabels };
 
-    const payload = {
-      title: title,
-      content: content,
-      labels: labels
-    };
-
-    /* Disable tombol simpan */
     const saveBtn = $('saveBtn');
     const originalText = saveBtn.textContent;
     saveBtn.disabled = true;
-    saveBtn.textContent = 'Menyimpan…';
-    setStatus('Mengirim ke Blogger…', '');
+    saveBtn.textContent = 'Menyimpan...';
 
     try {
-      let result;
+      let res;
       if (mode === 'edit' && editingId) {
-        result = await global.GRRM_ADMIN.api(
-          '/api/blogger/posts?id=' + encodeURIComponent(editingId),
-          { method: 'PUT', body: payload }
-        );
-        showToast('Post berhasil diperbarui!', 'success');
-      } else {
-        result = await global.GRRM_ADMIN.api('/api/blogger/posts', {
-          method: 'POST',
-          body: payload
+        res = await global.GRRM_ADMIN.api(`/api/blogger/posts?id=${editingId}`, {
+          method: 'PUT', body: payload
         });
-        showToast('Post berhasil dibuat!', 'success');
-
-        /* Setelah create sukses, redirect ke mode edit */
-        if (result && result.id) {
-          setTimeout(function () {
-            window.location.href = 'editor.html?id=' + encodeURIComponent(result.id);
-          }, 800);
+        showToast('Konten berhasil diperbarui!', 'success');
+      } else {
+        res = await global.GRRM_ADMIN.api('/api/blogger/posts', {
+          method: 'POST', body: payload
+        });
+        showToast('Konten berhasil dibuat!', 'success');
+        
+        if (res && res.id) {
+          setTimeout(() => {
+            window.location.href = `editor.html?id=${encodeURIComponent(res.id)}`;
+          }, 1000);
         }
       }
-
-      setStatus('Post tersimpan. Mengalihkan…', 'success');
     } catch (err) {
-      console.error('[Editor] Simpan gagal', err);
       showToast('Gagal menyimpan: ' + err.message, 'error');
-      setStatus('Gagal menyimpan: ' + err.message, 'error');
-    } finally {
       saveBtn.disabled = false;
       saveBtn.textContent = originalText;
     }
@@ -179,22 +227,27 @@
   function initEditor() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
+    const type = params.get('type');
 
     initToolbar();
-    initImageInsert();
-
+    initImageUpload();
     $('postForm').addEventListener('submit', onSubmit);
-
-    const logoutBtn = $('logoutBtn');
-    if (logoutBtn) logoutBtn.addEventListener('click', global.GRRM_ADMIN.logout);
 
     if (id) {
       loadPostForEdit(id);
     } else {
-      document.title = 'Buat Post Baru - Admin GRRM';
+      document.title = 'Buat Konten Baru - Admin GRRM';
+      if (type) {
+        const select = $('postCategory');
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].value.toLowerCase() === type.toLowerCase()) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
     }
   }
 
-  /* Tunggu admin:ready (artinya user sudah login) */
   document.addEventListener('admin:ready', initEditor);
 })(window);

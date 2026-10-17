@@ -12,14 +12,14 @@
 </head>
 <body>
 
-  <!-- ============ LAYAR 1: CEK LOGIN ============ -->
+  <!-- LAYAR 1: CEK LOGIN -->
   <div id="loadingScreen" class="admin-login">
     <div class="admin-login-card">
       <p>Memeriksa status login…</p>
     </div>
   </div>
 
-  <!-- ============ LAYAR 2: LOGIN ============ -->
+  <!-- LAYAR 2: LOGIN -->
   <div id="loginScreen" class="admin-login hidden">
     <div class="admin-login-card">
       <img src="../assets/images/logo-grrm.png" alt="GRRM" class="logo" />
@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <!-- ============ LAYAR 3: EDITOR ============ -->
+  <!-- LAYAR 3: EDITOR -->
   <div id="dashboardScreen" class="hidden">
 
     <header class="admin-header">
@@ -39,95 +39,121 @@
         <span class="admin-tag">Editor</span>
       </div>
       <div class="admin-header-right">
-        <span class="admin-user-email">Masuk sebagai Admin</span>
-        <a href="index.html" class="btn btn-outline btn-sm">← Dashboard</a>
-        <button type="button" class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
+        <a href="index.html" class="btn btn-outline btn-sm">← Kembali ke Dashboard</a>
       </div>
     </header>
 
     <main class="admin-main">
+      
+      <div class="editor-header">
+        <h1 id="editorTitle">Buat Konten Baru</h1>
+        <p id="editorSubtitle">Tulis berita, pengumuman, atau album galeri baru.</p>
+      </div>
 
-      <div class="admin-card">
-        <h1 id="editorTitle">Buat Post Baru</h1>
-        <p class="subtitle" id="editorSubtitle">Tulis berita atau album galeri baru.</p>
-
+      <div class="admin-card editor-card">
         <form id="postForm" novalidate>
 
           <!-- Judul -->
           <div class="form-group">
-            <label for="postTitle">Judul <span class="required">*</span></label>
+            <label for="postTitle">Judul Konten <span class="required">*</span></label>
             <input
               type="text"
               id="postTitle"
               name="title"
-              class="form-control"
+              class="form-control form-control-lg"
               placeholder="Contoh: Aksi Bersih-Bersih di Masjid Al-Hidayah"
               required
               maxlength="200"
             />
           </div>
 
-          <!-- Label -->
-          <div class="form-group">
-            <label for="postLabels">Label</label>
-            <input
-              type="text"
-              id="postLabels"
-              name="labels"
-              class="form-control"
-              placeholder="Pisahkan dengan koma. Contoh: Kegiatan, Berita"
-            />
-            <p class="form-hint">
-              Pilihan umum: <b>Kegiatan</b>, <b>Berita</b>, <b>Edukasi</b>, <b>Galeri</b>.
-              Untuk album foto, wajib ada label <b>Galeri</b>.
-            </p>
+          <div class="form-row">
+            <!-- Kategori Utama -->
+            <div class="form-group">
+              <label for="postCategory">Kategori Utama <span class="required">*</span></label>
+              <select id="postCategory" class="form-control" required>
+                <option value="Kegiatan">Berita / Kegiatan</option>
+                <option value="Edukasi">Edukasi</option>
+                <option value="Galeri">Album Galeri Foto</option>
+                <option value="Pengumuman">Pengumuman</option>
+              </select>
+              <p class="form-hint">Menentukan di halaman mana konten ini tampil.</p>
+            </div>
+
+            <!-- Label Tambahan (Opsional) -->
+            <div class="form-group">
+              <label for="postExtraLabels">Label Tambahan (Opsional)</label>
+              <input
+                type="text"
+                id="postExtraLabels"
+                class="form-control"
+                placeholder="Pisahkan dengan koma. Contoh: Kediri, Relawan"
+              />
+              <p class="form-hint">Tag tambahan untuk pencarian.</p>
+            </div>
           </div>
 
           <!-- Konten -->
           <div class="form-group">
-            <label for="postContent">Konten <span class="required">*</span></label>
+            <label for="postContent">Isi Konten <span class="required">*</span></label>
+            
+            <!-- Toolbar Editor -->
             <div class="editor-toolbar">
-              <button type="button" class="tool-btn" data-cmd="bold" title="Bold"><b>B</b></button>
-              <button type="button" class="tool-btn" data-cmd="italic" title="Italic"><i>I</i></button>
-              <button type="button" class="tool-btn" data-cmd="underline" title="Underline"><u>U</u></button>
+              <div class="toolbar-group">
+                <button type="button" class="tool-btn" data-cmd="bold" title="Tebal"><b>B</b></button>
+                <button type="button" class="tool-btn" data-cmd="italic" title="Miring"><i>I</i></button>
+                <button type="button" class="tool-btn" data-cmd="underline" title="Garis Bawah"><u>U</u></button>
+              </div>
               <span class="tool-sep"></span>
-              <button type="button" class="tool-btn" data-cmd="insertUnorderedList" title="Bullet List">• List</button>
-              <button type="button" class="tool-btn" data-cmd="insertOrderedList" title="Numbered List">1. List</button>
+              <div class="toolbar-group">
+                <button type="button" class="tool-btn" data-cmd="insertUnorderedList" title="Daftar Bulat">• List</button>
+                <button type="button" class="tool-btn" data-cmd="insertOrderedList" title="Daftar Angka">1. List</button>
+              </div>
               <span class="tool-sep"></span>
-              <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="h2" title="Heading">H2</button>
-              <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="p" title="Paragraph">¶</button>
+              <div class="toolbar-group">
+                <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="h2" title="Heading 2">H2</button>
+                <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="p" title="Paragraf">Paragraf</button>
+              </div>
               <span class="tool-sep"></span>
-              <button type="button" class="tool-btn" id="insertImageBtn" title="Sisipkan Gambar">🖼 Gambar</button>
+              <div class="toolbar-group" style="margin-left: auto;">
+                <!-- Input file tersembunyi -->
+                <input type="file" id="imageUploadInput" accept="image/*" style="display: none;" />
+                <button type="button" class="tool-btn btn-image" id="insertImageBtn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <span id="imageBtnText">Upload Gambar</span>
+                </button>
+              </div>
             </div>
+
+            <!-- Area Teks -->
             <div
               id="postContent"
               class="form-control editor-area"
               contenteditable="true"
-              data-placeholder="Tulis konten di sini…"
+              data-placeholder="Mulai tulis di sini..."
             ></div>
-            <p class="form-hint">
-              Tip: Gunakan toolbar untuk memformat. Untuk galeri, sisipkan 3+ gambar.
+            <p class="form-hint" style="margin-top: 10px;">
+              <strong>Tips Gambar:</strong> Untuk mengunggah foto, buka aplikasi Blogger di HP Anda, unggah foto ke draf, lalu salin URL gambarnya dan tempel di sini.
             </p>
           </div>
 
-          <!-- Hidden ID untuk mode edit -->
+          <!-- Hidden ID -->
           <input type="hidden" id="postId" name="id" />
 
-          <!-- Actions -->
+          <!-- Tombol Aksi -->
           <div class="form-actions">
             <a href="index.html" class="btn btn-outline">Batal</a>
-            <button type="submit" class="btn btn-primary" id="saveBtn">Simpan Post</button>
+            <button type="submit" class="btn btn-primary" id="saveBtn">Simpan Konten</button>
           </div>
 
         </form>
       </div>
 
-      <!-- Status message -->
-      <div id="statusMsg" class="status-msg hidden"></div>
-
     </main>
-
   </div>
+
+  <!-- Toast Notification -->
+  <div id="adminToast" class="admin-toast"></div>
 
   <script src="../assets/js/admin-common.js"></script>
   <script src="../assets/js/admin-editor.js"></script>

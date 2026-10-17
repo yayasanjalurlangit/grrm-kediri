@@ -14,3 +14,5 @@ BLOGGER_API_BASE = "https://www.googleapis.com/blogger/v3"
 
 # Untuk production, secret diset via Cloudflare Dashboard,
 # bukan di file ini (lebih aman).
+
+compatibility_flags = ["nodejs_compat"]

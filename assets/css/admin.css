@@ -627,3 +627,231 @@ button {
   .form-actions { flex-direction: column-reverse; }
   .form-actions .btn { width: 100%; }
 }
+
+/* =========================================================
+   DASHBOARD REDESIGN (TABS & HEADER)
+   ========================================================= */
+
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dash-header h1 {
+  font-size: 1.6rem;
+  color: var(--primary-dark);
+  margin-bottom: 4px;
+}
+
+.dash-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.tabs-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 12px;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(106, 47, 181, 0.2);
+}
+
+/* Mempercantik Card List */
+.admin-card {
+  background: transparent; /* Biar list-nya menyatu */
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.post-row {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  padding: 16px;
+  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(106, 47, 181, 0.08);
+  border-color: var(--primary-soft);
+}
+
+.post-title {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.post-meta {
+  font-size: 0.8rem;
+}
+
+.post-thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+}
+
+/* Mobile Responsive untuk Tabs */
+@media (max-width: 600px) {
+  .dash-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .tabs-container {
+    gap: 4px;
+  }
+  .tab-btn {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+  .post-row {
+    grid-template-columns: 60px 1fr;
+    padding: 12px;
+  }
+  .post-thumb {
+    width: 60px;
+    height: 60px;
+  }
+  .post-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+}
+
+/* =========================================================
+   EDITOR ENHANCEMENTS
+   ========================================================= */
+
+.editor-header {
+  margin-bottom: 24px;
+}
+
+.editor-header h1 {
+  font-size: 1.5rem;
+  color: var(--primary-dark);
+}
+
+.editor-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.editor-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-control-lg {
+  font-size: 1.1rem;
+  padding: 14px 16px;
+  font-weight: 500;
+}
+
+/* Perbaikan Toolbar */
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: #f8f9fa;
+  border: 1.5px solid var(--border);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 4px;
+}
+
+.tool-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.tool-btn:hover {
+  background: #fff;
+  border-color: var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.btn-image {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.btn-image:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.editor-area {
+  border-radius: 0 0 10px 10px;
+  border-top: none;
+  padding: 20px;
+  min-height: 400px;
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .editor-card {
+    padding: 20px;
+  }
+}
