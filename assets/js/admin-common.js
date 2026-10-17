@@ -48,27 +48,45 @@
   async function api(path, options) {
     options = options || {};
     options.credentials = 'same-origin';
+    
+    // Tambahkan timeout 30 detik agar tidak stuck selamanya
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+    options.signal = controller.signal;
+
     if (options.body && typeof options.body === 'object') {
       options.headers = Object.assign({}, options.headers, {
         'Content-Type': 'application/json'
       });
       options.body = JSON.stringify(options.body);
     }
-    const res = await fetch(path, options);
-    const data = await res.json().catch(function () { return null; });
-    if (!res.ok) {
-      let msg = 'HTTP ' + res.status;
-      // Cek jika data.error berbentuk objek (seperti dari Google API)
-      if (data && data.error) {
-        if (typeof data.error === 'string') {
-          msg = data.error;
-        } else if (data.error.message) {
-          msg = data.error.message; // Ambil pesan asli dari Google
-        } else {
-          msg = JSON.stringify(data.error);
-        }
+    
+    try {
+      const res = await fetch(path, options);
+      clearTimeout(timeoutId);
+      
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        throw new Error('Respons server tidak valid (bukan JSON).');
       }
-      throw new Error(msg);
+
+      if (!res.ok) {
+        let msg = 'HTTP ' + res.status;
+        if (data && data.error) {
+          msg = typeof data.error === 'string' ? data.error : (data.error.message || JSON.stringify(data.error));
+        }
+        throw new Error(msg);
+      }
+      return data;
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (err.name === 'AbortError') {
+        throw new Error('Waktu habis (Timeout). Koneksi ke server terlalu lambat.');
+      }
+      throw err;
     }
   }
 

@@ -218,6 +218,8 @@
       }
     } catch (err) {
       showToast('Gagal menyimpan: ' + err.message, 'error');
+    } finally {
+      // Selalu kembalikan tombol ke keadaan semula, apapun hasilnya
       saveBtn.disabled = false;
       saveBtn.textContent = originalText;
     }

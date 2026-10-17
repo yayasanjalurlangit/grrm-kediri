@@ -109,13 +109,23 @@
   /* ---------- Load Data ---------- */
   async function loadData() {
     try {
-      // Ambil 100 post terbaru
       const data = await global.GRRM_ADMIN.api('/api/blogger/posts?maxResults=100');
-      allPosts = (data.items || []).sort((a, b) => new Date(b.published || 0) - new Date(a.published || 0));
+      
+      // Pengecekan ekstra agar tidak crash
+      if (!data || !data.items) {
+        throw new Error('Data postingan tidak ditemukan (Format API salah).');
+      }
+
+      allPosts = data.items.sort((a, b) => new Date(b.published || 0) - new Date(a.published || 0));
       renderPostsToTabs();
     } catch (e) {
       console.error(e);
-      $('beritaContainer').innerHTML = `<div class="admin-empty"><p>Gagal memuat data: ${e.message}</p></div>`;
+      const errHtml = `<div class="admin-empty"><p>Gagal memuat data: ${e.message}</p><button type="button" class="btn btn-outline" onclick="location.reload()" style="margin-top:10px">Coba Lagi</button></div>`;
+      
+      // Tampilkan error di semua tab agar tidak stuck
+      if ($('beritaContainer')) $('beritaContainer').innerHTML = errHtml;
+      if ($('galeriContainer')) $('galeriContainer').innerHTML = errHtml;
+      if ($('pengumumanContainer')) $('pengumumanContainer').innerHTML = errHtml;
     }
   }
 
