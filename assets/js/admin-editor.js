@@ -92,7 +92,7 @@
     
     let width = img.width;
     let height = img.height;
-    const MAX_SIZE = 1200; // Maksimal lebar/tinggi 1200px
+    const MAX_SIZE = 1000; // Maksimal lebar/tinggi 1000px
 
     // Hitung rasio aspek
     if (width > MAX_SIZE || height > MAX_SIZE) {
@@ -120,7 +120,7 @@
       mimeType = 'image/jpeg';
     }
 
-    const base64Image = canvas.toDataURL(mimeType, 0.8);
+    const base64Image = canvas.toDataURL(mimeType, 0.7);
 
     // Sisipkan ke editor
     document.execCommand('insertHTML', false,

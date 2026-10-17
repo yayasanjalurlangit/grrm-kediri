@@ -57,10 +57,19 @@
     const res = await fetch(path, options);
     const data = await res.json().catch(function () { return null; });
     if (!res.ok) {
-      const msg = (data && data.error) || ('HTTP ' + res.status);
+      let msg = 'HTTP ' + res.status;
+      // Cek jika data.error berbentuk objek (seperti dari Google API)
+      if (data && data.error) {
+        if (typeof data.error === 'string') {
+          msg = data.error;
+        } else if (data.error.message) {
+          msg = data.error.message; // Ambil pesan asli dari Google
+        } else {
+          msg = JSON.stringify(data.error);
+        }
+      }
       throw new Error(msg);
     }
-    return data;
   }
 
   /* ---------- Ambil info user (placeholder) ---------- */
