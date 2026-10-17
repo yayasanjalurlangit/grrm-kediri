@@ -1,5 +1,5 @@
 /* =========================================================
-   GRRM - Admin Editor Logic (With Auto Image Compress)
+   GRRM - Admin Editor Logic (Manual Image URL Version)
    ========================================================= */
 
 (function (global) {
@@ -44,90 +44,29 @@
     }
   }
 
-  /* ---------- SISTEM UPLOAD & KOMPRESI GAMBAR ---------- */
-  function initImageUpload() {
+  /* ---------- Sisipkan Gambar via URL (Anti Error 403) ---------- */
+  function initImageInsert() {
     const btn = $('insertImageBtn');
-    const fileInput = $('imageUploadInput');
-    const btnText = $('imageBtnText');
+    if (!btn) return;
 
-    // Klik tombol -> Buka file picker
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', function (e) {
       e.preventDefault();
-      fileInput.click();
+      
+      const pesan = "Tempel (Paste) URL Gambar dari Blogger di sini.\n\nContoh: https://blogger.googleusercontent.com/img/.../s1600/foto.jpg";
+      const url = window.prompt(pesan);
+      
+      if (!url) return;
+      
+      // Bersihkan jika user mem-paste tag <img> lengkap dari kode HTML Blogger
+      const cleanUrl = url.replace(/<img[^>]+src=["']([^"']+)["'][^>]*>/i, '$1');
+      
+      // Sisipkan ke editor dengan styling responsif
+      document.execCommand('insertHTML', false,
+        `<img src="${cleanUrl}" alt="Gambar Kegiatan" style="max-width:100%;height:auto;border-radius:12px;margin:16px 0;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:block;">`);
+      
+      // Fokus kembali ke editor
+      $('postContent').focus();
     });
-
-    // Saat file dipilih
-    fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      if (!file.type.startsWith('image/')) {
-        return showToast('File harus berupa gambar.', 'error');
-      }
-
-      // Ubah teks tombol jadi loading
-      btnText.textContent = 'Memproses...';
-      btn.disabled = true;
-
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const img = new Image();
-        img.onload = () => {
-          // Proses kompresi
-          compressAndInsert(img, () => {
-            btnText.textContent = 'Upload Gambar';
-            btn.disabled = false;
-            fileInput.value = ''; // reset input
-          });
-        };
-        img.src = ev.target.result;
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function compressAndInsert(img, callback) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    let width = img.width;
-    let height = img.height;
-    const MAX_SIZE = 1000; // Maksimal lebar/tinggi 1000px
-
-    // Hitung rasio aspek
-    if (width > MAX_SIZE || height > MAX_SIZE) {
-      if (width > height) {
-        height = Math.round((height * MAX_SIZE) / width);
-        width = MAX_SIZE;
-      } else {
-        width = Math.round((width * MAX_SIZE) / height);
-        height = MAX_SIZE;
-      }
-    }
-
-    canvas.width = width;
-    canvas.height = height;
-    ctx.drawImage(img, 0, 0, width, height);
-
-    // Konversi ke WebP (kualitas 80%)
-    // Fallback ke JPEG jika browser tidak support WebP
-    let mimeType = 'image/webp';
-    try {
-      if (canvas.toDataURL(mimeType).indexOf('data:image/webp') === -1) {
-        mimeType = 'image/jpeg';
-      }
-    } catch(err) {
-      mimeType = 'image/jpeg';
-    }
-
-    const base64Image = canvas.toDataURL(mimeType, 0.7);
-
-    // Sisipkan ke editor
-    document.execCommand('insertHTML', false,
-      `<img src="${base64Image}" alt="Gambar" style="max-width:100%;height:auto;border-radius:8px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,0.1);">`);
-    
-    showToast('Gambar berhasil dikompres & disisipkan!', 'success');
-    callback();
   }
 
   /* ---------- Load Data untuk Edit ---------- */
@@ -180,6 +119,7 @@
     if (!title) return showToast('Judul wajib diisi.', 'error');
     if (!content || content === '<br>') return showToast('Konten wajib diisi.', 'error');
 
+    // Gabungkan Kategori Utama + Label Tambahan
     let finalLabels = [primaryCat];
     if (extraLabelsRaw) {
       const extras = extraLabelsRaw.split(',').map(s => s.trim()).filter(Boolean);
@@ -210,6 +150,7 @@
         });
         showToast('Konten berhasil dibuat!', 'success');
         
+        // Jika create baru, redirect ke mode edit setelah 1 detik
         if (res && res.id) {
           setTimeout(() => {
             window.location.href = `editor.html?id=${encodeURIComponent(res.id)}`;
@@ -225,20 +166,21 @@
     }
   }
 
-  /* ---------- Init ---------- */
+  /* ---------- Init Editor ---------- */
   function initEditor() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     const type = params.get('type');
 
     initToolbar();
-    initImageUpload();
+    initImageInsert();
     $('postForm').addEventListener('submit', onSubmit);
 
     if (id) {
       loadPostForEdit(id);
     } else {
       document.title = 'Buat Konten Baru - Admin GRRM';
+      // Jika dibuka dari tab tertentu (misal ?type=galeri), set dropdown otomatis
       if (type) {
         const select = $('postCategory');
         for (let i = 0; i < select.options.length; i++) {
