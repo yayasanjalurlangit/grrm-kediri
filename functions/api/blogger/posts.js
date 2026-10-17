@@ -108,7 +108,7 @@ export async function onRequestPost(context) {
   }
 
   const accessToken = await getAccessToken({ ...env, BLOGGER_REFRESH_TOKEN: refreshToken });
-  const apiUrl = BLOGGER_API + '/blogs/' + env.BLOGGER_BLOG_ID + '/posts/';
+  const apiUrl = BLOGGER_API + '/blogs/' + env.BLOGGER_BLOG_ID + '/posts/?key=' + env.BLOGGER_API_KEY;
 
   const res = await fetch(apiUrl, {
     method: 'POST',
