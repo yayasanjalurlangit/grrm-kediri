@@ -12,10 +12,14 @@
 </head>
 <body>
 
+  <!-- LOADING SCREEN -->
   <div id="loadingScreen" class="admin-login">
-    <div class="admin-login-card"><p>Memeriksa status login…</p></div>
+    <div class="admin-login-card">
+      <p>Memeriksa status login…</p>
+    </div>
   </div>
 
+  <!-- LOGIN SCREEN -->
   <div id="loginScreen" class="admin-login hidden">
     <div class="admin-login-card">
       <img src="../assets/images/logo-grrm.png" alt="GRRM" class="logo" />
@@ -25,6 +29,7 @@
     </div>
   </div>
 
+  <!-- EDITOR SCREEN -->
   <div id="dashboardScreen" class="hidden">
     <header class="admin-header">
       <div class="admin-brand">
@@ -73,9 +78,9 @@
             
             <div class="editor-toolbar">
               <div class="toolbar-group">
-                <button type="button" class="tool-btn" data-cmd="bold"><b>B</b></button>
-                <button type="button" class="tool-btn" data-cmd="italic"><i>I</i></button>
-                <button type="button" class="tool-btn" data-cmd="underline"><u>U</u></button>
+                <button type="button" class="tool-btn" data-cmd="bold" title="Tebal"><b>B</b></button>
+                <button type="button" class="tool-btn" data-cmd="italic" title="Miring"><i>I</i></button>
+                <button type="button" class="tool-btn" data-cmd="underline" title="Garis Bawah"><u>U</u></button>
               </div>
               <div class="toolbar-group">
                 <button type="button" class="tool-btn" data-cmd="insertUnorderedList">• List</button>
@@ -85,8 +90,8 @@
                 <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="h2">H2</button>
                 <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="p">Paragraf</button>
               </div>
+              
               <div class="toolbar-group" style="margin-left: auto;">
-                <!-- HANYA TOMBOL URL, TIDAK ADA INPUT FILE -->
                 <button type="button" class="tool-btn btn-image" id="insertImageBtn">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                   Sisipkan URL Gambar
@@ -97,7 +102,7 @@
             <div id="postContent" class="form-control editor-area" contenteditable="true" data-placeholder="Mulai tulis konten di sini..."></div>
             
             <p style="margin-top: 12px; font-size: 0.85rem; color: #6b7280;">
-              <strong>Tips Gambar:</strong> Buka aplikasi Blogger di HP/laptop, unggah foto, lalu salin (copy) URL gambar. Klik tombol "Sisipkan URL Gambar" dan tempel (paste) URL tersebut.
+              <strong>Tips Gambar:</strong> Buka aplikasi Blogger, unggah foto, salin (copy) URL gambar. Klik tombol "Sisipkan URL Gambar" dan tempel (paste) URL tersebut.
             </p>
           </div>
 
