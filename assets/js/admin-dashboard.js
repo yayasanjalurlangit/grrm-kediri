@@ -1,15 +1,12 @@
 /* =========================================================
-   GRRM - Admin Dashboard (Tabbed Version)
+   GRRM - Admin Dashboard (Tabbed Version - Fixed)
    ========================================================= */
-
 (function (global) {
   'use strict';
 
   let allPosts = [];
-
   const $ = (id) => document.getElementById(id);
 
-  /* ---------- Tabs Logic ---------- */
   function initTabs() {
     const tabs = document.querySelectorAll('.tab-btn');
     const panes = document.querySelectorAll('.tab-pane');
@@ -22,9 +19,8 @@
 
         tab.classList.add('active');
         const targetId = 'tab-' + tab.dataset.tab;
-        $(targetId).classList.remove('hidden');
+        if ($(targetId)) $(targetId).classList.remove('hidden');
 
-        // Ubah URL tombol "+ Buat Konten Baru" berdasarkan tab aktif
         if (btnCreate) {
           const type = tab.dataset.tab;
           btnCreate.href = `editor.html?type=${type}`;
@@ -34,7 +30,6 @@
     });
   }
 
-  /* ---------- Render Baris Post ---------- */
   function buildRow(post) {
     const labels = (post.labels || []).map(l => `<span class="post-label">${l}</span>`).join(' ');
     const img = extractFirstImage(post.content);
@@ -62,7 +57,6 @@
     return row;
   }
 
-  /* ---------- Filter Kategori & Render ---------- */
   function renderPostsToTabs() {
     const containers = {
       berita: $('beritaContainer'),
@@ -70,12 +64,11 @@
       pengumuman: $('pengumumanContainer')
     };
 
-    // Reset containers
-    Object.values(containers).forEach(c => c.innerHTML = '');
+    Object.values(containers).forEach(c => { if (c) c.innerHTML = ''; });
 
     if (allPosts.length === 0) {
       Object.values(containers).forEach(c => {
-        c.innerHTML = '<div class="admin-empty"><p>Belum ada konten.</p></div>';
+        if (c) c.innerHTML = '<div class="admin-empty"><p>Belum ada konten.</p></div>';
       });
       return;
     }
@@ -85,33 +78,29 @@
     allPosts.forEach(post => {
       const labels = (post.labels || []).map(l => l.toLowerCase());
       
-      if (labels.includes('galeri')) {
+      if (labels.includes('galeri') && containers.galeri) {
         containers.galeri.appendChild(buildRow(post));
         counts.galeri++;
-      } else if (labels.includes('pengumuman')) {
+      } else if (labels.includes('pengumuman') && containers.pengumuman) {
         containers.pengumuman.appendChild(buildRow(post));
         counts.pengumuman++;
-      } else {
-        // Anggap berita jika bukan galeri/pengumuman
+      } else if (containers.berita) {
         containers.berita.appendChild(buildRow(post));
         counts.berita++;
       }
     });
 
-    // Tampilkan Empty State jika kosong per tab
     Object.keys(containers).forEach(key => {
-      if (counts[key] === 0) {
+      if (counts[key] === 0 && containers[key]) {
         containers[key].innerHTML = `<div class="admin-empty"><p>Belum ada ${key}.</p></div>`;
       }
     });
   }
 
-  /* ---------- Load Data ---------- */
   async function loadData() {
     try {
       const data = await global.GRRM_ADMIN.api('/api/blogger/posts?maxResults=100');
       
-      // Pengecekan ekstra agar tidak crash
       if (!data || !data.items) {
         throw new Error('Data postingan tidak ditemukan (Format API salah).');
       }
@@ -121,20 +110,17 @@
     } catch (e) {
       console.error(e);
       const errHtml = `<div class="admin-empty"><p>Gagal memuat data: ${e.message}</p><button type="button" class="btn btn-outline" onclick="location.reload()" style="margin-top:10px">Coba Lagi</button></div>`;
-      
-      // Tampilkan error di semua tab agar tidak stuck
       if ($('beritaContainer')) $('beritaContainer').innerHTML = errHtml;
       if ($('galeriContainer')) $('galeriContainer').innerHTML = errHtml;
       if ($('pengumumanContainer')) $('pengumumanContainer').innerHTML = errHtml;
     }
   }
 
-  /* ---------- Aksi Hapus ---------- */
   async function onDelete(post, btnEl) {
     if (!confirm(`Hapus konten "${post.title}"?\nTindakan ini tidak bisa dibatalkan.`)) return;
 
     const row = btnEl.closest('.post-row');
-    const parent = row.parentElement; // Simpan referensi parent SEBELUM dihapus
+    const parent = row.parentElement; 
     
     row.style.opacity = '0.5';
     row.style.pointerEvents = 'none';
@@ -142,10 +128,9 @@
     try {
       await global.GRRM_ADMIN.api(`/api/blogger/posts?id=${post.id}`, { method: 'DELETE' });
       
-      row.remove(); // Hapus elemen dari layar
+      row.remove(); 
       global.GRRM_DASHBOARD.showToast('Konten berhasil dihapus', 'success');
       
-      // Cek jika list kosong setelah dihapus (gunakan variabel parent yang disimpan tadi)
       if (parent && parent.children.length === 0) {
         parent.innerHTML = '<div class="admin-empty"><p>Belum ada konten.</p></div>';
       }
@@ -156,7 +141,6 @@
     }
   }
 
-  /* ---------- Utilities ---------- */
   function extractFirstImage(html) {
     if (!html) return '';
     const m = html.match(/<img[^>]+src=["']([^"']+)["']/i);
@@ -184,7 +168,6 @@
     t._timer = setTimeout(() => t.classList.remove('is-visible'), 3000);
   }
 
-  /* ---------- Init ---------- */
   function initDashboard() {
     initTabs();
     loadData();
