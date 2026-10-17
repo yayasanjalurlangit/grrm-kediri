@@ -1,13 +1,10 @@
 /* =========================================================
-   GRRM - Blogger Posts Proxy
-   Semua CRUD diproksikan supaya:
-   - Access token di-refresh otomatis dari refresh_token
-   - Client secret tetap di server
+   GRRM - Blogger Posts Proxy (Ultimate Fix)
    ========================================================= */
 
 const BLOGGER_API = 'https://www.googleapis.com/blogger/v3';
 
-/* ---------- Helper: ambil access_token dari refresh_token ---------- */
+/* ---------- Helper: ambil access_token ---------- */
 async function getAccessToken(env) {
   const res = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
@@ -22,13 +19,13 @@ async function getAccessToken(env) {
   
   if (!res.ok) {
     const t = await res.text();
-    throw new Error('Refresh token gagal: ' + t);
+    throw new Error('Gagal mendapatkan Access Token. Cek kembali Client ID/Secret/Refresh Token. Detail: ' + t);
   }
   const data = await res.json();
   return data.access_token;
 }
 
-/* ---------- Helper: ambil session dari cookie ---------- */
+/* ---------- Helper: session dari cookie ---------- */
 function getSession(request) {
   const cookieHeader = request.headers.get('Cookie') || '';
   const sessionCookie = parseCookie(cookieHeader, 'grrm_session');
@@ -58,27 +55,19 @@ function json(data, status) {
 }
 
 /* =========================================================
-   GET  /api/blogger/posts             → list posts (public, pakai API key)
-   GET  /api/blogger/posts?id=xxx      → 1 post (public)
-   POST /api/blogger/posts             → create post (butuh login)
-   PUT  /api/blogger/posts?id=xxx      → update post (butuh login)
-   DELETE /api/blogger/posts?id=xxx    → delete post (butuh login)
+   GET (List & Detail) - Tetap pakai API Key (Public)
    ========================================================= */
-
 export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
   const id = url.searchParams.get('id');
 
-  /* Detail 1 post */
   if (id) {
-    const apiUrl = BLOGGER_API + '/blogs/' + env.BLOGGER_BLOG_ID + '/posts/' + encodeURIComponent(id) + '?key=' + env.BLOGGER_API_KEY;
+    const apiUrl = `${BLOGGER_API}/blogs/${env.BLOGGER_BLOG_ID}/posts/${encodeURIComponent(id)}?key=${env.BLOGGER_API_KEY}`;
     const res = await fetch(apiUrl);
-    const data = await res.json();
-    return json(data, res.status);
+    return json(await res.json(), res.status);
   }
 
-  /* List posts */
   const params = new URLSearchParams({
     key: env.BLOGGER_API_KEY,
     maxResults: url.searchParams.get('maxResults') || '10',
@@ -87,29 +76,31 @@ export async function onRequestGet(context) {
   const labels = url.searchParams.get('labels');
   if (labels) params.set('labels', labels);
 
-  const apiUrl = BLOGGER_API + '/blogs/' + env.BLOGGER_BLOG_ID + '/posts?' + params.toString();
+  const apiUrl = `${BLOGGER_API}/blogs/${env.BLOGGER_BLOG_ID}/posts?${params.toString()}`;
   const res = await fetch(apiUrl);
-  const data = await res.json();
-  return json(data, res.status);
+  return json(await res.json(), res.status);
 }
 
+/* =========================================================
+   POST (Create) - Butuh OAuth Token + API Key
+   ========================================================= */
 export async function onRequestPost(context) {
   const { request, env } = context;
   const session = getSession(request);
-
   const refreshToken = env.BLOGGER_REFRESH_TOKEN || (session && session.rt);
-  if (!refreshToken) return json({ error: 'Belum login.' }, 401);
+  
+  if (!refreshToken) return json({ error: 'Sesi login tidak valid. Silakan logout dan login ulang.' }, 401);
 
   let body;
   try { body = await request.json(); } catch (e) {
-    return json({ error: 'Body harus JSON.' }, 400);
+    return json({ error: 'Format data salah.' }, 400);
   }
 
   try {
     const accessToken = await getAccessToken({ ...env, BLOGGER_REFRESH_TOKEN: refreshToken });
     
-    // PERBAIKAN: Menghapus garis miring sebelum '?key=' agar sesuai dengan dokumentasi Google
-    const apiUrl = BLOGGER_API + '/blogs/' + env.BLOGGER_BLOG_ID + '/posts?key=' + env.BLOGGER_API_KEY;
+    // Kembalikan ?key= untuk memastikan Google menerima permintaan
+    const apiUrl = `${BLOGGER_API}/blogs/${env.BLOGGER_BLOG_ID}/posts?key=${env.BLOGGER_API_KEY}`;
 
     const res = await fetch(apiUrl, {
       method: 'POST',
@@ -124,33 +115,42 @@ export async function onRequestPost(context) {
         labels: body.labels || []
       })
     });
-    const data = await res.json();
-    return json(data, res.status);
+    
+    const resData = await res.json();
+    if (!res.ok) {
+      // Jika Google menolak, kirimkan pesan aslinya ke frontend
+      return json({ error: 'Google API Error: ' + (resData.error?.message || 'Unknown Error') }, res.status);
+    }
+    return json(resData, res.status);
+    
   } catch (err) {
     return json({ error: err.message }, 500);
   }
 }
 
+/* =========================================================
+   PUT (Update) - Butuh OAuth Token + API Key
+   ========================================================= */
 export async function onRequestPut(context) {
   const { request, env } = context;
   const session = getSession(request);
   const url = new URL(request.url);
   const id = url.searchParams.get('id');
-  if (!id) return json({ error: 'Parameter id wajib.' }, 400);
+  if (!id) return json({ error: 'Parameter ID tidak ditemukan.' }, 400);
 
   const refreshToken = env.BLOGGER_REFRESH_TOKEN || (session && session.rt);
-  if (!refreshToken) return json({ error: 'Belum login.' }, 401);
+  if (!refreshToken) return json({ error: 'Sesi login tidak valid. Silakan logout dan login ulang.' }, 401);
 
   let body;
   try { body = await request.json(); } catch (e) {
-    return json({ error: 'Body harus JSON.' }, 400);
+    return json({ error: 'Format data salah.' }, 400);
   }
 
   try {
     const accessToken = await getAccessToken({ ...env, BLOGGER_REFRESH_TOKEN: refreshToken });
     
-    // PERBAIKAN: Menambahkan ?key=API_KEY yang sebelumnya hilang
-    const apiUrl = BLOGGER_API + '/blogs/' + env.BLOGGER_BLOG_ID + '/posts/' + encodeURIComponent(id) + '?key=' + env.BLOGGER_API_KEY;
+    // Kembalikan ?key=
+    const apiUrl = `${BLOGGER_API}/blogs/${env.BLOGGER_BLOG_ID}/posts/${encodeURIComponent(id)}?key=${env.BLOGGER_API_KEY}`;
 
     const res = await fetch(apiUrl, {
       method: 'PUT',
@@ -166,28 +166,35 @@ export async function onRequestPut(context) {
         labels: body.labels || []
       })
     });
-    const data = await res.json();
-    return json(data, res.status);
+    
+    const resData = await res.json();
+    if (!res.ok) {
+      return json({ error: 'Google API Error: ' + (resData.error?.message || 'Unknown Error') }, res.status);
+    }
+    return json(resData, res.status);
   } catch (err) {
     return json({ error: err.message }, 500);
   }
 }
 
+/* =========================================================
+   DELETE - Butuh OAuth Token + API Key
+   ========================================================= */
 export async function onRequestDelete(context) {
   const { request, env } = context;
   const session = getSession(request);
   const url = new URL(request.url);
   const id = url.searchParams.get('id');
-  if (!id) return json({ error: 'Parameter id wajib.' }, 400);
+  if (!id) return json({ error: 'Parameter ID tidak ditemukan.' }, 400);
 
   const refreshToken = env.BLOGGER_REFRESH_TOKEN || (session && session.rt);
-  if (!refreshToken) return json({ error: 'Belum login.' }, 401);
+  if (!refreshToken) return json({ error: 'Sesi login tidak valid. Silakan logout dan login ulang.' }, 401);
 
   try {
     const accessToken = await getAccessToken({ ...env, BLOGGER_REFRESH_TOKEN: refreshToken });
     
-    // PERBAIKAN: Menambahkan ?key=API_KEY yang sebelumnya hilang
-    const apiUrl = BLOGGER_API + '/blogs/' + env.BLOGGER_BLOG_ID + '/posts/' + encodeURIComponent(id) + '?key=' + env.BLOGGER_API_KEY;
+    // Kembalikan ?key=
+    const apiUrl = `${BLOGGER_API}/blogs/${env.BLOGGER_BLOG_ID}/posts/${encodeURIComponent(id)}?key=${env.BLOGGER_API_KEY}`;
 
     const res = await fetch(apiUrl, {
       method: 'DELETE',
@@ -195,8 +202,9 @@ export async function onRequestDelete(context) {
     });
 
     if (res.status === 204) return json({ ok: true });
-    const data = await res.text();
-    return json({ error: data }, res.status);
+    
+    const errText = await res.text();
+    return json({ error: 'Google API Error: ' + errText }, res.status);
   } catch (err) {
     return json({ error: err.message }, 500);
   }
