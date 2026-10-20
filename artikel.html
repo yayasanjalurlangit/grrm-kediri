@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artikel & Berita — GRRM Kediri</title>
+<meta name="description" content="Informasi terbaru, berita, dan pengumuman seputar kegiatan GRRM Kediri.">
+<link rel="icon" href="assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- Placeholder Navbar -->
+<div id="header-placeholder"></div>
+
+<!-- HEADER PAGE (Page Hero) -->
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow reveal">Informasi</span>
+    <h1 class="section-title reveal" style="font-size: clamp(2rem, 4vw, 3rem);">Artikel & Berita</h1>
+    <p class="section-lead reveal">Ikuti kabar terbaru, pengumuman, dan dokumentasi kegiatan dari Gerakan Resik-resik Masjid Kediri.</p>
+  </div>
+</section>
+
+<!-- KONTEN ARTIKEL -->
+<section class="section">
+  <div class="container">
+    
+    <!-- Toolbar Pencarian & Filter -->
+    <div class="toolbar reveal">
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" id="artikelSearch" placeholder="Cari judul atau isi berita…">
+      </label>
+      <div class="chips" id="artikelFilter">
+        <button class="chip is-active" data-label="all">Semua</button>
+        <button class="chip" data-label="berita">Berita</button>
+        <button class="chip" data-label="pengumuman">Pengumuman</button>
+        <button class="chip" data-label="kegiatan">Kegiatan</button>
+      </div>
+    </div>
+
+    <!-- Wadah Grid Artikel -->
+    <div class="grid grid--3" id="artikelGrid">
+      <!-- Skeleton Loading -->
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </div>
+
+    <!-- Tombol Load More -->
+    <div style="text-align:center; margin-top:44px;">
+      <button class="btn btn--primary" id="loadMore" style="display: none;">Muat Lebih Banyak</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Placeholder Footer -->
+<div id="footer-placeholder"></div>
+
+<!-- SCRIPT JS -->
+<script src="assets/js/config.js"></script>
+<script src="assets/js/blogger.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/artikel.js"></script>
+</body>
+</html>

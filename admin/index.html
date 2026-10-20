@@ -1,87 +1,228 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Dashboard - Admin GRRM</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../assets/css/admin.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin Panel — GRRM Kediri</title>
+<link rel="icon" href="../assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<!-- Library Google OAuth -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<style>
+  /* CSS Khusus Admin */
+  body { background: #f4f6f8; }
+  .admin-login {
+    min-height: 100vh; display: grid; place-items: center; padding: 20px;
+  }
+  .login-card {
+    background: #fff; padding: 40px; border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.05); text-align: center; max-width: 400px; width: 100%;
+  }
+  .login-card img { width: 80px; margin: 0 auto 20px; }
+  .login-card h1 { font-size: 1.5rem; margin-bottom: 10px; }
+  .login-card p { color: #666; margin-bottom: 30px; font-size: 0.9rem; }
+
+  .admin-dashboard { display: none; padding: 40px 20px; }
+  .admin-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; padding: 16px 24px; border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 30px;
+  }
+  .admin-nav h2 { font-size: 1.2rem; margin: 0; }
+  .admin-grid { display: grid; grid-template-columns: 250px 1fr; gap: 30px; align-items: start; }
+  .admin-sidebar {
+    background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    position: sticky; top: 20px;
+  }
+  .admin-sidebar a {
+    display: block; padding: 12px 16px; border-radius: 8px; color: #333; font-weight: 600;
+    text-decoration: none; margin-bottom: 5px; transition: 0.2s;
+  }
+  .admin-sidebar a:hover, .admin-sidebar a.active { background: #f0eaff; color: #3D1F73; }
+  .admin-content {
+    background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    min-height: 400px;
+  }
+</style>
 </head>
 <body>
 
-  <!-- LOADING SCREEN -->
-  <div id="loadingScreen" class="admin-login">
-    <div class="admin-login-card">
-      <p>Memeriksa status login…</p>
+<!-- HALAMAN LOGIN -->
+<div class="admin-login" id="loginScreen">
+  <div class="login-card">
+    <img src="../assets/img/logo-grrm.webp" alt="Logo">
+    <h1>Admin Panel</h1>
+    <p>Silakan masuk menggunakan akun Google yang memiliki akses ke blog GRRM Kediri.</p>
+    
+    <!-- Tombol Login Kustom -->
+    <button id="btnGoogleLogin" class="btn btn--primary" style="width: 100%; justify-content: center; padding: 14px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Masuk dengan Google
+    </button>
+  </div>
+</div>
+
+<!-- DASHBOARD ADMIN -->
+<div class="admin-dashboard" id="dashboardScreen">
+  <div class="container" style="max-width: 1200px;">
+    
+    <div class="admin-nav">
+      <h2>Dashboard GRRM</h2>
+      <button class="btn btn--primary" id="btnLogout" style="padding: 8px 16px; font-size: 0.8rem; background: #dc2626;">Keluar</button>
     </div>
-  </div>
 
-  <!-- LOGIN SCREEN -->
-  <div id="loginScreen" class="admin-login hidden">
-    <div class="admin-login-card">
-      <img src="../assets/images/logo-grrm.png" alt="GRRM" class="logo" />
-      <h1>Admin Panel GRRM</h1>
-      <p>Login dengan akun Google Anda untuk mengelola konten.</p>
-      <a href="/api/auth/login" class="btn btn-google" id="loginBtn">Login dengan Google</a>
+    <div class="admin-grid">
+      <!-- Sidebar Menu -->
+      <aside class="admin-sidebar">
+        <a href="#" class="active">Daftar Artikel</a>
+        <a href="struktur.html">Struktur Organisasi</a>
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+        <a href="../index.html" target="_blank" style="color: #666;">Lihat Website ↗</a>
+      </aside>
+
+      <!-- Konten Utama (Daftar Artikel) -->
+      <main class="admin-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h3 style="margin: 0;">Daftar Artikel</h3>
+          <a href="editor.html" class="btn btn--accent" style="padding: 10px 20px; font-size: 0.85rem;">+ Tulis Artikel</a>
+        </div>
+        
+        <!-- Wadah Tabel/Daftar Artikel -->
+        <div id="postListContainer">
+          <p style="color: #666; text-align: center; padding: 40px 0;">Memuat data dari Blogger...</p>
+        </div>
+      </main>
     </div>
+
   </div>
+</div>
 
-  <!-- DASHBOARD SCREEN -->
-  <div id="dashboardScreen" class="hidden">
-    <header class="admin-header">
-      <div class="admin-brand">
-        <img src="../assets/images/logo-grrm.png" alt="GRRM" />
-        <span>GRRM</span>
-        <span class="admin-tag">Panel</span>
-      </div>
-      <div class="admin-header-right">
-        <span class="admin-user-email" id="userInfo"></span>
-        <a href="../index.html" target="_blank" class="btn btn-outline btn-sm">Lihat Website</a>
-        <button type="button" class="btn btn-outline btn-sm" id="logoutBtn">Logout</button>
-      </div>
-    </header>
+<!-- SCRIPT CONFIG & API -->
+<script src="../assets/js/config.js"></script>
 
-    <main class="admin-main">
-      <div class="dash-header">
-        <div>
-          <h1>Selamat Datang, Admin</h1>
-          <p>Kelola konten website GRRM dengan mudah di sini.</p>
-        </div>
-        <a href="editor.html" id="btnCreateNew" class="btn btn-primary btn-lg">+ Buat Konten Baru</a>
-      </div>
+<!-- SCRIPT LOGIKA ADMIN -->
+<script>
+  let accessToken = sessionStorage.getItem('admin_token') || null;
+  let tokenClient;
 
-      <div class="tabs-container">
-        <button class="tab-btn active" data-tab="berita">Berita & Artikel</button>
-        <button class="tab-btn" data-tab="galeri">Album Galeri</button>
-        <button class="tab-btn" data-tab="pengumuman">Pengumuman</button>
-      </div>
+  // 1. Inisialisasi Google OAuth Client
+  window.onload = () => {
+    if (!window.google) {
+      setTimeout(window.onload, 500);
+      return;
+    }
 
-      <div class="tab-content">
-        <div id="tab-berita" class="tab-pane">
-          <div class="admin-card">
-            <div id="beritaContainer" class="posts-list"><div class="admin-empty"><p>Memuat berita...</p></div></div>
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: SITE.CLIENT_ID,
+      scope: 'https://www.googleapis.com/auth/blogger', // Scope untuk edit Blogger
+      callback: (tokenResponse) => {
+        if (tokenResponse && tokenResponse.access_token) {
+          accessToken = tokenResponse.access_token;
+          sessionStorage.setItem('admin_token', accessToken);
+          checkAuth();
+        }
+      },
+    });
+
+    checkAuth();
+  };
+
+  // 2. Tombol Login diklik
+  document.getElementById('btnGoogleLogin').addEventListener('click', () => {
+    tokenClient.requestAccessToken();
+  });
+
+  // 3. Tombol Logout diklik
+  document.getElementById('btnLogout').addEventListener('click', () => {
+    sessionStorage.removeItem('admin_token');
+    accessToken = null;
+    checkAuth();
+    // Opsional: google.accounts.oauth2.revoke(accessToken);
+  });
+
+  // 4. Fungsi Cek Status Login
+  function checkAuth() {
+    if (accessToken) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashboardScreen').style.display = 'block';
+      loadArticles();
+    } else {
+      document.getElementById('loginScreen').style.display = 'grid';
+      document.getElementById('dashboardScreen').style.display = 'none';
+    }
+  }
+
+  // 5. Muat Daftar Artikel (Membutuhkan Access Token)
+  async function loadArticles() {
+    const container = document.getElementById('postListContainer');
+    try {
+      // Panggil API Blogger menggunakan Access Token (Bukan API Key)
+      const res = await fetch(`https://www.googleapis.com/blogger/v3/blogs/${SITE.BLOG_ID}/posts?maxResults=50`, {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      });
+      
+      if (res.status === 401) {
+        // Token kadaluarsa
+        sessionStorage.removeItem('admin_token');
+        accessToken = null;
+        checkAuth();
+        return;
+      }
+
+      if (!res.ok) throw new Error("Gagal mengambil data");
+      
+      const data = await res.json();
+      const posts = data.items || [];
+
+      if (posts.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #888;">Belum ada artikel.</p>';
+        return;
+      }
+
+      container.innerHTML = posts.map(p => `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee;">
+          <div>
+            <h4 style="margin: 0 0 5px 0; color: #333;">${p.title}</h4>
+            <small style="color: #888;">${new Date(p.published).toLocaleDateString('id-ID')} • ${(p.labels || []).join(', ')}</small>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <a href="editor.html?id=${p.id}" class="btn btn--primary" style="padding: 8px 12px; font-size: 0.75rem; background: #3D1F73;">Edit</a>
+            <button onclick="deletePost('${p.id}')" class="btn" style="padding: 8px 12px; font-size: 0.75rem; background: #fee2e2; color: #dc2626;">Hapus</button>
           </div>
         </div>
-        <div id="tab-galeri" class="tab-pane hidden">
-          <div class="admin-card">
-            <div id="galeriContainer" class="posts-list"><div class="admin-empty"><p>Memuat galeri...</p></div></div>
-          </div>
-        </div>
-        <div id="tab-pengumuman" class="tab-pane hidden">
-          <div class="admin-card">
-            <div id="pengumumanContainer" class="posts-list"><div class="admin-empty"><p>Memuat pengumuman...</p></div></div>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
+      `).join('');
 
-  <div id="adminToast" class="admin-toast"></div>
+    } catch (err) {
+      container.innerHTML = `<p style="color: red; text-align: center;">Error: ${err.message}. Pastikan Anda login dengan akun yang benar.</p>`;
+    }
+  }
 
-  <script src="../assets/js/admin-common.js"></script>
-  <script src="../assets/js/admin-dashboard.js"></script>
+  // 6. Fungsi Hapus Artikel
+  window.deletePost = async (id) => {
+    if (!confirm('Apakah Anda yakin ingin menghapus artikel ini secara permanen?')) return;
+    
+    try {
+      const res = await fetch(`https://www.googleapis.com/blogger/v3/blogs/${SITE.BLOG_ID}/posts/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      });
+      
+      if (res.ok) {
+        alert('Artikel berhasil dihapus!');
+        loadArticles(); // Refresh daftar
+      } else {
+        alert('Gagal menghapus artikel.');
+      }
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
+  };
+</script>
+
 </body>
 </html>

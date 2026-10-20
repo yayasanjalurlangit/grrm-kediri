@@ -1,0 +1,2 @@
+Catatan:
+Wowok mbg

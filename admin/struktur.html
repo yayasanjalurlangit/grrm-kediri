@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Struktur Organisasi — Admin GRRM</title>
+<link rel="icon" href="../assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+
+<style>
+  /* CSS Khusus Admin */
+  body { background: #f4f6f8; padding-bottom: 50px; }
+  .admin-header {
+    background: #fff; padding: 16px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
+  }
+  .admin-header h1 { font-size: 1.2rem; margin: 0; }
+  .editor-container {
+    background: #fff; padding: 30px; border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 800px; margin: 0 auto;
+  }
+  .member-row {
+    display: grid; grid-template-columns: 150px 1fr 150px 40px; gap: 10px;
+    margin-bottom: 15px; align-items: center; padding: 15px;
+    background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;
+  }
+  .form-control {
+    width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1;
+    border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.9rem;
+  }
+  .form-control:focus { outline: none; border-color: #6A42B8; }
+  .btn-delete {
+    background: #fee2e2; color: #dc2626; border: none; border-radius: 6px;
+    width: 40px; height: 40px; cursor: pointer; font-weight: bold; font-size: 1.2rem;
+    display: grid; place-items: center; transition: 0.2s;
+  }
+  .btn-delete:hover { background: #fecaca; }
+  .action-buttons { margin-top: 30px; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<header class="admin-header">
+  <h1>Struktur Organisasi</h1>
+  <a href="index.html" class="btn" style="background:#e2e8f0; color:#333; padding: 8px 16px; font-size: 0.85rem;">← Kembali ke Dashboard</a>
+</header>
+
+<div class="editor-container">
+  <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+    <p style="color: #666; font-size: 0.9rem; margin: 0;">Atur susunan pengurus. Urutan dari atas ke bawah akan mengikuti hierarki.</p>
+    <button class="btn btn--primary" onclick="addMemberRow()" style="padding: 8px 16px; font-size: 0.85rem;">+ Tambah Anggota</button>
+  </div>
+
+  <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <p style="color: #666; font-size: 0.9rem; margin: 0 0 5px 0;">Atur susunan pengurus. Urutan dari atas ke bawah akan mengikuti hierarki.</p>
+      <p style="color: #dc2626; font-size: 0.8rem; margin: 0; font-weight: bold;">*Instruksi Foto: Pindahkan file foto ke folder <code>assets/img/</code>, lalu ketik nama filenya (misal: <code>ketua.jpg</code>) di kolom foto.</p>
+    </div>
+    <button class="btn btn--primary" onclick="addMemberRow()" style="padding: 8px 16px; font-size: 0.85rem; flex-shrink: 0;">+ Tambah Anggota</button>
+  </div>
+
+  <!-- Wadah Daftar Anggota -->
+  <div id="memberList">
+    <p style="text-align: center; color: #888; padding: 20px;">Memuat data...</p>
+  </div>
+
+  <div class="action-buttons">
+    <a href="index.html" class="btn" style="background:#e2e8f0; color:#333; padding: 12px 24px;">Batal</a>
+    <button class="btn btn--accent" id="btnSave" onclick="saveStruktur()" style="padding: 12px 24px;">Simpan Struktur</button>
+  </div>
+</div>
+
+<script src="../assets/js/config.js"></script>
+<script>
+  const accessToken = sessionStorage.getItem('admin_token');
+  const listContainer = document.getElementById('memberList');
+  const btnSave = document.getElementById('btnSave');
+  let existingPostId = null; // Untuk menyimpan ID post jika sudah ada
+
+  if (!accessToken) window.location.href = 'index.html';
+
+  // 1. Ambil data struktur dari Blogger
+  async function loadStruktur() {
+    try {
+      const res = await fetch(`https://www.googleapis.com/blogger/v3/blogs/${SITE.BLOG_ID}/posts?labels=struktur-organisasi&maxResults=1`, {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      });
+      
+      const data = await res.json();
+      
+      if (data.items && data.items.length > 0) {
+        // Post sudah ada, ambil ID dan parsing JSON
+        existingPostId = data.items[0].id;
+        // Karena fetchBodies default false, kita harus ambil detail postnya
+        const detailRes = await fetch(`https://www.googleapis.com/blogger/v3/blogs/${SITE.BLOG_ID}/posts/${existingPostId}`, {
+          headers: { 'Authorization': `Bearer ${accessToken}` }
+        });
+        const detailData = await detailRes.json();
+        
+        const strukturData = JSON.parse(detailData.content);
+        listContainer.innerHTML = ''; // Bersihkan loading
+        strukturData.forEach(item => addMemberRow(item.role, item.name, item.img || ''));
+        
+      } else {
+        // Post belum ada, buat baris default
+        listContainer.innerHTML = '';
+        addMemberRow('Ketua', '');
+        addMemberRow('Wakil Ketua', '');
+        addMemberRow('Sekretaris', '');
+        addMemberRow('Bendahara', '');
+        addMemberRow('Anggota', '');
+      }
+    } catch (err) {
+      console.error(err);
+      listContainer.innerHTML = `<p style="color: red;">Gagal memuat data. Error: ${err.message}</p>`;
+    }
+  }
+
+  // 2. Fungsi Tambah Baris
+  window.addMemberRow = (role = '', name = '', img = '') => {
+    const row = document.createElement('div');
+    row.className = 'member-row';
+    row.innerHTML = `
+      <input type="text" class="form-control input-role" placeholder="Jabatan (Cth: Ketua)" value="${role}">
+      <input type="text" class="form-control input-name" placeholder="Nama Lengkap" value="${name}">
+      <input type="text" class="form-control input-img" placeholder="Foto (Cth: ketua.jpg)" value="${img}">
+      <button class="btn-delete" onclick="this.parentElement.remove()" title="Hapus">×</button>
+    `;
+    listContainer.appendChild(row);
+  };
+
+  // 3. Fungsi Simpan
+  window.saveStruktur = async () => {
+    btnSave.textContent = 'Menyimpan...';
+    btnSave.disabled = true;
+
+    // Kumpulkan data dari form
+    const rows = document.querySelectorAll('.member-row');
+    const strukturArray = [];
+    
+    rows.forEach(row => {
+      const role = row.querySelector('.input-role').value.trim();
+      const name = row.querySelector('.input-name').value.trim();
+      const img = row.querySelector('.input-img').value.trim(); // Ambil foto
+      if (role && name) {
+        strukturArray.push({ role, name, img }); // Simpan foto ke JSON
+      }
+    });
+
+    if (strukturArray.length === 0) {
+      alert('Minimal isi satu data pengurus.');
+      btnSave.textContent = 'Simpan Struktur';
+      btnSave.disabled = false;
+      return;
+    }
+
+    // Ubah ke JSON string
+    const jsonContent = JSON.stringify(strukturArray, null, 2);
+
+    const payload = {
+      title: 'Struktur Organisasi GRRM',
+      content: jsonContent,
+      labels: ['struktur-organisasi']
+    };
+
+    try {
+      let url = `https://www.googleapis.com/blogger/v3/blogs/${SITE.BLOG_ID}/posts`;
+      let method = 'POST';
+
+      if (existingPostId) {
+        url += `/${existingPostId}`;
+        method = 'PATCH'; // Update jika sudah ada
+      }
+
+      const res = await fetch(url, {
+        method: method,
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        existingPostId = result.id; // Simpan ID baru
+        alert('Struktur Organisasi berhasil disimpan!');
+      } else {
+        const errData = await res.json();
+        throw new Error(errData.error.message || 'Gagal menyimpan data');
+      }
+
+    } catch (err) {
+      alert("Error: " + err.message);
+    } finally {
+      btnSave.textContent = 'Simpan Struktur';
+      btnSave.disabled = false;
+    }
+  };
+
+  // Jalankan saat halaman dimuat
+  loadStruktur();
+</script>
+
+</body>
+</html>

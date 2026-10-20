@@ -1,125 +1,261 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Editor - Admin GRRM</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../assets/css/admin.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Editor Artikel — Admin GRRM</title>
+<link rel="icon" href="../assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+
+<style>
+  /* CSS Khusus Admin Editor */
+  body { background: #f4f6f8; padding-bottom: 50px; }
+  .admin-header {
+    background: #fff; padding: 16px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
+  }
+  .admin-header h1 { font-size: 1.2rem; margin: 0; }
+  .editor-container {
+    background: #fff; padding: 30px; border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 900px; margin: 0 auto;
+  }
+  .form-group { margin-bottom: 24px; }
+  .form-group label {
+    display: block; font-weight: 700; margin-bottom: 8px; color: #3D1F73;
+  }
+  .form-control {
+    width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0;
+    border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 0.95rem;
+    transition: border-color 0.3s;
+  }
+  .form-control:focus { outline: none; border-color: #6A42B8; }
+  textarea.form-control { min-height: 300px; font-family: monospace; resize: vertical; }
+  
+  .label-pills { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .label-pill {
+    padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 20px;
+    font-size: 0.8rem; cursor: pointer; transition: 0.2s; user-select: none;
+  }
+  .label-pill:hover { background: #f1f5f9; }
+  .label-pill.active { background: #3D1F73; color: #fff; border-color: #3D1F73; }
+
+  .toolbar {
+    display: flex; gap: 5px; margin-bottom: 8px; padding: 8px; background: #f8fafc;
+    border: 1px solid #e2e8f0; border-radius: 8px; flex-wrap: wrap;
+  }
+  .toolbar button {
+    padding: 6px 12px; border: 1px solid #cbd5e1; background: #fff; border-radius: 4px;
+    cursor: pointer; font-weight: 600; font-size: 0.8rem;
+  }
+  .toolbar button:hover { background: #e2e8f0; }
+  
+  .action-buttons {
+    display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px;
+    padding-top: 20px; border-top: 1px solid #e2e8f0;
+  }
+</style>
 </head>
 <body>
 
-  <!-- LOADING SCREEN -->
-  <div id="loadingScreen" class="admin-login">
-    <div class="admin-login-card">
-      <p>Memeriksa status login…</p>
+<!-- HEADER ADMIN -->
+<header class="admin-header">
+  <h1 id="pageTitle">Tulis Artikel Baru</h1>
+  <a href="index.html" class="btn" style="background:#e2e8f0; color:#333; padding: 8px 16px; font-size: 0.85rem;">← Kembali ke Dashboard</a>
+</header>
+
+<!-- FORMULIR EDITOR -->
+<div class="editor-container">
+  <form id="editorForm">
+    <input type="hidden" id="postId" value="">
+    
+    <div class="form-group">
+      <label for="postTitle">Judul Artikel</label>
+      <input type="text" id="postTitle" class="form-control" placeholder="Masukkan judul artikel..." required>
     </div>
-  </div>
 
-  <!-- LOGIN SCREEN -->
-  <div id="loginScreen" class="admin-login hidden">
-    <div class="admin-login-card">
-      <img src="../assets/images/logo-grrm.png" alt="GRRM" class="logo" />
-      <h1>Admin Panel GRRM</h1>
-      <p>Silakan login dulu untuk mengakses editor.</p>
-      <a href="/api/auth/login" class="btn btn-google">Login dengan Google</a>
+    <div class="form-group">
+      <label for="postLabels">Label / Kategori</label>
+      <input type="text" id="postLabels" class="form-control" placeholder="Pisahkan dengan koma (misal: berita, kegiatan)">
+      <div class="label-pills" id="labelPills">
+        <div class="label-pill" data-val="berita">Berita</div>
+        <div class="label-pill" data-val="pengumuman">Pengumuman</div>
+        <div class="label-pill" data-val="kegiatan">Kegiatan</div>
+        <div class="label-pill" data-val="galeri">Galeri</div>
+      </div>
     </div>
-  </div>
 
-  <!-- EDITOR SCREEN -->
-  <div id="dashboardScreen" class="hidden">
-    <header class="admin-header">
-      <div class="admin-brand">
-        <img src="../assets/images/logo-grrm.png" alt="GRRM" />
-        <span>GRRM</span>
-        <span class="admin-tag">Editor</span>
-      </div>
-      <div class="admin-header-right">
-        <a href="index.html" class="btn btn-outline btn-sm">← Kembali ke Dashboard</a>
-      </div>
-    </header>
-
-    <main class="admin-main">
-      <div class="dash-header">
-        <div>
-          <h1 id="editorTitle">Buat Konten Baru</h1>
-          <p id="editorSubtitle">Tulis berita, pengumuman, atau album galeri baru.</p>
-        </div>
+    <div class="form-group">
+      <label for="postContent">Isi Artikel (Mendukung HTML)</label>
+      
+      <!-- Toolbar Sederhana -->
+      <div class="toolbar">
+        <button type="button" onclick="insertTag('<b>', '</b>')"><b>B</b></button>
+        <button type="button" onclick="insertTag('<i>', '</i>')"><i>I</i></button>
+        <button type="button" onclick="insertTag('<h2>', '</h2>')">H2</button>
+        <button type="button" onclick="insertTag('<h3>', '</h3>')">H3</button>
+        <button type="button" onclick="insertTag('<p>', '</p>')">Paragraf</button>
+        <button type="button" onclick="insertImage()">+ Gambar</button>
       </div>
 
-      <div class="admin-card">
-        <form id="postForm" novalidate>
-          <div class="form-group">
-            <label for="postTitle">Judul Konten <span style="color:red">*</span></label>
-            <input type="text" id="postTitle" name="title" class="form-control" placeholder="Contoh: Aksi Bersih-Bersih di Masjid Al-Hidayah" required maxlength="200" />
-          </div>
+      <textarea id="postContent" class="form-control" placeholder="<p>Tulis isi berita di sini...</p>" required></textarea>
+      <small style="color: #888; display: block; margin-top: 8px;">*Ketik kode HTML secara manual atau gunakan tombol di atas.</small>
+    </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="postCategory">Kategori Utama <span style="color:red">*</span></label>
-              <select id="postCategory" class="form-control" required>
-                <option value="Kegiatan">Berita / Kegiatan</option>
-                <option value="Edukasi">Edukasi</option>
-                <option value="Galeri">Album Galeri Foto</option>
-                <option value="Pengumuman">Pengumuman</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="postExtraLabels">Label Tambahan (Opsional)</label>
-              <input type="text" id="postExtraLabels" class="form-control" placeholder="Contoh: Kediri, Relawan" />
-            </div>
-          </div>
+    <div class="action-buttons">
+      <a href="index.html" class="btn" style="background:#e2e8f0; color:#333; padding: 12px 24px;">Batal</a>
+      <button type="submit" class="btn btn--primary" id="btnSave" style="padding: 12px 24px;">Simpan Artikel</button>
+    </div>
+  </form>
+</div>
 
-          <div class="form-group">
-            <label for="postContent">Isi Konten <span style="color:red">*</span></label>
-            
-            <div class="editor-toolbar">
-              <div class="toolbar-group">
-                <button type="button" class="tool-btn" data-cmd="bold" title="Tebal"><b>B</b></button>
-                <button type="button" class="tool-btn" data-cmd="italic" title="Miring"><i>I</i></button>
-                <button type="button" class="tool-btn" data-cmd="underline" title="Garis Bawah"><u>U</u></button>
-              </div>
-              <div class="toolbar-group">
-                <button type="button" class="tool-btn" data-cmd="insertUnorderedList">• List</button>
-                <button type="button" class="tool-btn" data-cmd="insertOrderedList">1. List</button>
-              </div>
-              <div class="toolbar-group">
-                <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="h2">H2</button>
-                <button type="button" class="tool-btn" data-cmd="formatBlock" data-value="p">Paragraf</button>
-              </div>
-              
-              <div class="toolbar-group" style="margin-left: auto;">
-                <button type="button" class="tool-btn btn-image" id="insertImageBtn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                  Sisipkan URL Gambar
-                </button>
-              </div>
-            </div>
+<!-- SCRIPT CONFIG & API -->
+<script src="../assets/js/config.js"></script>
 
-            <div id="postContent" class="form-control editor-area" contenteditable="true" data-placeholder="Mulai tulis konten di sini..."></div>
-            
-            <p style="margin-top: 12px; font-size: 0.85rem; color: #6b7280;">
-              <strong>Tips Gambar:</strong> Buka aplikasi Blogger, unggah foto, salin (copy) URL gambar. Klik tombol "Sisipkan URL Gambar" dan tempel (paste) URL tersebut.
-            </p>
-          </div>
+<!-- SCRIPT LOGIKA EDITOR -->
+<script>
+  const accessToken = sessionStorage.getItem('admin_token');
+  const params = new URLSearchParams(window.location.search);
+  const postId = params.get('id');
+  
+  const form = document.getElementById('editorForm');
+  const titleInput = document.getElementById('postTitle');
+  const labelsInput = document.getElementById('postLabels');
+  const contentInput = document.getElementById('postContent');
+  const btnSave = document.getElementById('btnSave');
 
-          <input type="hidden" id="postId" name="id" />
+  // Jika tidak ada token, tendang kembali ke halaman login
+  if (!accessToken) {
+    window.location.href = 'index.html';
+  }
 
-          <div class="form-actions">
-            <a href="index.html" class="btn btn-outline">Batal</a>
-            <button type="submit" class="btn btn-primary" id="saveBtn">Simpan Konten</button>
-          </div>
-        </form>
-      </div>
-    </main>
-  </div>
+  // 1. Cek Mode (Edit atau Baru)
+  if (postId) {
+    document.getElementById('pageTitle').textContent = "Edit Artikel";
+    document.getElementById('postId').value = postId;
+    loadPostForEdit(postId);
+  }
 
-  <div id="adminToast" class="admin-toast"></div>
+  // 2. Fungsi Ambil Data untuk Diedit
+  async function loadPostForEdit(id) {
+    try {
+      const res = await fetch(`https://www.googleapis.com/blogger/v3/blogs/${SITE.BLOG_ID}/posts/${id}`, {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      });
+      if (!res.ok) throw new Error("Gagal mengambil data artikel");
+      
+      const post = await res.json();
+      
+      titleInput.value = post.title;
+      labelsInput.value = (post.labels || []).join(', ');
+      contentInput.value = post.content;
+      
+      updatePills();
+    } catch (err) {
+      alert(err.message);
+      window.location.href = 'index.html';
+    }
+  }
 
-  <script src="../assets/js/admin-common.js"></script>
-  <script src="../assets/js/admin-editor.js"></script>
+  // 3. Logika Pills Label
+  document.querySelectorAll('.label-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const val = pill.dataset.val;
+      let currentLabels = labelsInput.value.split(',').map(l => l.trim()).filter(l => l);
+      
+      if (currentLabels.includes(val)) {
+        currentLabels = currentLabels.filter(l => l !== val);
+        pill.classList.remove('active');
+      } else {
+        currentLabels.push(val);
+        pill.classList.add('active');
+      }
+      
+      labelsInput.value = currentLabels.join(', ');
+    });
+  });
+
+  // Sinkronisasi input teks ke Pill (jika user mengetik manual)
+  labelsInput.addEventListener('input', updatePills);
+  
+  function updatePills() {
+    const currentLabels = labelsInput.value.split(',').map(l => l.trim().toLowerCase());
+    document.querySelectorAll('.label-pill').forEach(pill => {
+      if (currentLabels.includes(pill.dataset.val)) {
+        pill.classList.add('active');
+      } else {
+        pill.classList.remove('active');
+      }
+    });
+  }
+
+  // 4. Logika Simpan (Submit)
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btnSave.textContent = 'Menyimpan...';
+    btnSave.disabled = true;
+
+    const payload = {
+      title: titleInput.value,
+      content: contentInput.value,
+      labels: labelsInput.value.split(',').map(l => l.trim()).filter(l => l)
+    };
+
+    try {
+      let url = `https://www.googleapis.com/blogger/v3/blogs/${SITE.BLOG_ID}/posts`;
+      let method = 'POST';
+
+      if (postId) {
+        url += `/${postId}`;
+        method = 'PATCH'; // PATCH untuk update
+      }
+
+      const res = await fetch(url, {
+        method: method,
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        alert('Artikel berhasil disimpan!');
+        window.location.href = 'index.html';
+      } else {
+        const errData = await res.json();
+        throw new Error(errData.error.message || 'Gagal menyimpan artikel');
+      }
+
+    } catch (err) {
+      alert("Error: " + err.message);
+      btnSave.textContent = 'Simpan Artikel';
+      btnSave.disabled = false;
+    }
+  });
+
+  // 5. Fungsi Bantuan Editor
+  window.insertTag = (openTag, closeTag) => {
+    const startPos = contentInput.selectionStart;
+    const endPos = contentInput.selectionEnd;
+    const text = contentInput.value;
+    
+    contentInput.value = text.substring(0, startPos) + openTag + text.substring(startPos, endPos) + closeTag + text.substring(endPos);
+    contentInput.focus();
+    contentInput.setSelectionRange(startPos + openTag.length, endPos + openTag.length);
+  };
+
+  window.insertImage = () => {
+    const url = prompt("Masukkan URL gambar (harus berawalan http/https):");
+    if (url) {
+      const imgTag = `<img src="${url}" alt="Gambar Artikel" style="width:100%; border-radius:8px; margin: 20px 0;">`;
+      insertTag(imgTag, '');
+    }
+  };
+</script>
+
 </body>
 </html>

@@ -1,394 +1,140 @@
-/* =========================================================
-   GRRM - Gerakan Resik Resik Masjid
-   Main Interaction Script (Smooth Animations)
-   ========================================================= */
-
-(function () {
-  'use strict';
-
-  /* =========================================================
-     KONFIGURASI & UTILITY
-     ========================================================= */
-  const CONFIG = window.GRRM_CONFIG || {
-    slider: { autoPlay: true, interval: 6000, pauseOnHover: true },
-    nav: { stickyHeader: true, scrollThreshold: 40 },
-    animation: { enableScrollReveal: true, revealOffset: 80 }
-  };
-
-  const motionQuery = window.matchMedia
-    ? window.matchMedia('(prefers-reduced-motion: reduce)')
-    : null;
-
-  let PREFERS_REDUCED_MOTION = motionQuery ? motionQuery.matches : false;
-
-  if (motionQuery && motionQuery.addEventListener) {
-    motionQuery.addEventListener('change', function (e) {
-      PREFERS_REDUCED_MOTION = e.matches;
-    });
-  }
-
-  function debounce(fn, wait) {
-    let t;
-    return function () {
-      const args = arguments;
-      clearTimeout(t);
-      t = setTimeout(function () {
-        fn.apply(null, args);
-      }, wait);
-    };
-  }
-
-  /* =========================================================
-     1. BRAND LOGO — auto-inject ke semua halaman
-     ========================================================= */
-  function initBrandLogo() {
-    const brand = document.querySelector('.brand');
-    if (!brand) return;
-    if (brand.querySelector('.brand-logo')) return;
-
-    const logo = document.createElement('img');
-    logo.src = 'assets/images/logo-grrm.png';
-    logo.alt = 'Logo GRRM';
-    logo.className = 'brand-logo';
-    logo.onerror = function () { logo.style.display = 'none'; };
-
-    brand.insertBefore(logo, brand.firstChild);
-  }
-
-  /* =========================================================
-     2. HEADER — shadow saat scroll
-     ========================================================= */
-  function initHeaderScroll() {
-    const header = document.getElementById('siteHeader');
-    if (!header) return;
-
-    const threshold = CONFIG.nav && CONFIG.nav.scrollThreshold != null
-      ? CONFIG.nav.scrollThreshold
-      : 40;
-    let ticking = false;
-
-    function update() {
-      header.classList.toggle('scrolled', window.scrollY > threshold);
-      ticking = false;
-    }
-
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    update();
-  }
-
-  /* =========================================================
-     3. NAVIGASI MOBILE
-     ========================================================= */
-  function initMobileNav() {
-    const toggle = document.getElementById('navToggle');
-    const nav = document.getElementById('siteNav');
-    if (!toggle || !nav) return;
-
-    function openNav() {
-      toggle.classList.add('active');
-      nav.classList.add('open');
-      document.body.classList.add('nav-open');
-      toggle.setAttribute('aria-expanded', 'true');
-      toggle.setAttribute('aria-label', 'Tutup menu navigasi');
-    }
-
-    function closeNav() {
-      toggle.classList.remove('active');
-      nav.classList.remove('open');
-      document.body.classList.remove('nav-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.setAttribute('aria-label', 'Buka menu navigasi');
-    }
-
-    function isOpen() {
-      return nav.classList.contains('open');
-    }
-
-    toggle.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (isOpen()) closeNav();
-      else openNav();
-    });
-
-    nav.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        if (isOpen()) closeNav();
-      });
-    });
-
-    document.addEventListener('click', function (e) {
-      if (!isOpen()) return;
-      if (!nav.contains(e.target) && !toggle.contains(e.target)) closeNav();
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && isOpen()) {
-        closeNav();
-        toggle.focus();
-      }
-    });
-
-    window.addEventListener(
-      'resize',
-      debounce(function () {
-        if (window.innerWidth > 1100 && isOpen()) closeNav();
-      }, 150)
-    );
-  }
-
-  /* =========================================================
-     4. HERO SLIDER
-     ========================================================= */
-  function initHeroSlider() {
-    const hero = document.getElementById('hero');
-    if (!hero) return;
-
-    const slides = hero.querySelectorAll('.hero-slide');
-    const dots = hero.querySelectorAll('.hero-dots .dot');
-    const prevBtn = document.getElementById('heroPrev');
-    const nextBtn = document.getElementById('heroNext');
-
-    if (slides.length === 0) return;
-
-    let currentIndex = 0;
-    let autoTimer = null;
-    let isTransitioning = false;
-
-    const interval = CONFIG.slider && CONFIG.slider.interval != null
-      ? CONFIG.slider.interval
-      : 6000;
-    const autoPlay = CONFIG.slider ? CONFIG.slider.autoPlay !== false : true;
-    const pauseOnHover = CONFIG.slider ? CONFIG.slider.pauseOnHover !== false : true;
-
-    const TRANSITION_MS = 800;
-
-    function goToSlide(index) {
-      if (isTransitioning && slides.length > 1) return;
-
-      if (index < 0) index = slides.length - 1;
-      if (index >= slides.length) index = 0;
-      if (index === currentIndex && slides.length > 1) return;
-
-      isTransitioning = true;
-
-      slides.forEach(function (slide, i) {
-        slide.classList.toggle('active', i === index);
-      });
-      dots.forEach(function (dot, i) {
-        const isActive = i === index;
-        dot.classList.toggle('active', isActive);
-        if (isActive) dot.setAttribute('aria-current', 'true');
-        else dot.removeAttribute('aria-current');
-      });
-
-      currentIndex = index;
-
-      const duration = PREFERS_REDUCED_MOTION ? 0 : TRANSITION_MS;
-      setTimeout(function () {
-        isTransitioning = false;
-      }, duration);
-    }
-
-    function nextSlide() { goToSlide(currentIndex + 1); }
-    function prevSlide() { goToSlide(currentIndex - 1); }
-
-    function startAutoPlay() {
-      if (!autoPlay || slides.length < 2) return;
-      stopAutoPlay();
-      autoTimer = setInterval(nextSlide, interval);
-    }
-    function stopAutoPlay() {
-      if (autoTimer) {
-        clearInterval(autoTimer);
-        autoTimer = null;
-      }
-    }
-
-    if (nextBtn) {
-      nextBtn.addEventListener('click', function () {
-        nextSlide();
-        startAutoPlay();
-      });
-    }
-    if (prevBtn) {
-      prevBtn.addEventListener('click', function () {
-        prevSlide();
-        startAutoPlay();
-      });
-    }
-
-    dots.forEach(function (dot) {
-      dot.addEventListener('click', function () {
-        const index = parseInt(dot.dataset.index, 10);
-        if (!isNaN(index)) {
-          goToSlide(index);
-          startAutoPlay();
-        }
-      });
-    });
-
-    if (pauseOnHover) {
-      hero.addEventListener('mouseenter', stopAutoPlay);
-      hero.addEventListener('mouseleave', startAutoPlay);
-    }
-
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) stopAutoPlay();
-      else startAutoPlay();
-    });
-
-    document.addEventListener('keydown', function (e) {
-      const tag = (e.target && e.target.tagName) || '';
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-      if (e.key === 'ArrowRight') { nextSlide(); startAutoPlay(); }
-      if (e.key === 'ArrowLeft')  { prevSlide(); startAutoPlay(); }
-    });
-
-    let touchStartX = 0;
-    let touchStartY = 0;
-
-    hero.addEventListener('touchstart', function (e) {
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;
-    }, { passive: true });
-
-    hero.addEventListener('touchend', function (e) {
-      const dx = e.changedTouches[0].screenX - touchStartX;
-      const dy = e.changedTouches[0].screenY - touchStartY;
-
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-        if (dx < 0) nextSlide();
-        else prevSlide();
-        startAutoPlay();
-      }
-    }, { passive: true });
-
-    goToSlide(0);
-    startAutoPlay();
-  }
-
-  /* =========================================================
-     5. FOOTER — tahun otomatis
-     ========================================================= */
-  function initFooterYear() {
-    const yearEl = document.getElementById('year');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-  }
-
-  /* =========================================================
-     6. SCROLL REVEAL
-     ========================================================= */
-  function initScrollReveal() {
-    if (!CONFIG.animation || CONFIG.animation.enableScrollReveal === false) return;
-    if (!('IntersectionObserver' in window)) return;
-    if (PREFERS_REDUCED_MOTION) return;
-
-    const targets = document.querySelectorAll(
-      '.section-profil, .section-tentang, .section-sejarah, .section-visi-misi'
-    );
-    if (targets.length === 0) return;
-
-    targets.forEach(function (el) { el.classList.add('reveal'); });
-
-    const offset = CONFIG.animation.revealOffset != null
-      ? CONFIG.animation.revealOffset
-      : 80;
-
-    const observer = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('reveal-visible');
-          observer.unobserve(entry.target);
-        });
-      },
-      {
-        threshold: 0.12,
-        rootMargin: '0px 0px -' + offset + 'px 0px'
-      }
-    );
-
-    targets.forEach(function (el) { observer.observe(el); });
-  }
-
-  /* =========================================================
-     7. SMOOTH SCROLL — anchor internal
-     ========================================================= */
-  function initSmoothScroll() {
-    const links = document.querySelectorAll('a[href^="#"]:not([href="#"])');
-    if (links.length === 0) return;
-
-    links.forEach(function (link) {
-      link.addEventListener('click', function (e) {
-        const targetId = link.getAttribute('href');
-        const target = document.querySelector(targetId);
-        if (!target) return;
-
-        e.preventDefault();
-        target.scrollIntoView({
-          behavior: PREFERS_REDUCED_MOTION ? 'auto' : 'smooth',
-          block: 'start'
-        });
-      });
-    });
-  }
-
-  /* =========================================================
-     8. PAGE TRANSITION — animasi halus saat pindah halaman
-     ========================================================= */
-  function initPageTransition() {
-    if (PREFERS_REDUCED_MOTION) return;
-
-    const links = document.querySelectorAll('a[href$=".html"]');
-    if (links.length === 0) return;
-
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-
-    links.forEach(function (link) {
-      link.addEventListener('click', function (e) {
-        const href = link.getAttribute('href');
-        if (!href) return;
-
-        if (link.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
-          return;
-        }
-
-        const targetPage = href.split('#')[0];
-        if (targetPage === currentPage) return;
-
-        e.preventDefault();
-        document.body.classList.add('page-exiting');
-
-        setTimeout(function () {
-          window.location.href = href;
-        }, 220);
-      });
-    });
-  }
-
-  /* =========================================================
-     INIT ALL
-     ========================================================= */
-  function init() {
-    initBrandLogo();
-    initHeaderScroll();
-    initMobileNav();
-    initHeroSlider();
-    initFooterYear();
-    initScrollReveal();
-    initSmoothScroll();
-    initPageTransition();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+/* ============ UI GLOBAL & KOMPONEN ============ */
+document.addEventListener('DOMContentLoaded', () => {
+  
+  // 1. RENDER HEADER (Sesuai class di style.css)
+  const headerHTML = `
+    <header class="nav">
+      <div class="nav__inner">
+        <a href="index.html" class="nav__brand" aria-label="Beranda">
+          <img src="assets/img/logo-grrm.webp" alt="Logo GRRM" class="nav__logo">
+          <span class="nav__brand-text">GRRM KEDIRI<span>Gerakan Resik-resik Masjid Kediri</span></span>
+        </a>
+        <nav class="nav__links" aria-label="Navigasi utama">
+          <a href="index.html">Beranda</a>
+          <a href="profil.html">Profil</a>
+          <a href="galeri.html">Galeri</a>
+          <a href="artikel.html">Artikel</a>
+          <a href="kontak.html">Kontak</a>
+        </nav>
+        <button class="nav__toggle" aria-label="Buka menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+  `;
+  const headerPlaceholder = document.getElementById('header-placeholder');
+  if (headerPlaceholder) headerPlaceholder.innerHTML = headerHTML;
+
+  // 2. RENDER FOOTER (Sesuai class di style.css)
+  const footerHTML = `
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__grid">
+          <div class="footer__brand">
+            <img src="assets/img/logo-grrm.webp" alt="Logo GRRM Kediri" class="footer__logo">
+            <p>Gerakan Resik-resik Masjid Kediri — gerakan sosial gratis untuk memakmurkan masjid, menjaga kebersihan, dan mempererat ukhuwah Islamiyah.</p>
+          </div>
+          <nav class="footer__nav" aria-label="Navigasi footer">
+            <h4>Navigasi</h4>
+            <ul>
+              <li><a href="index.html">Beranda</a></li>
+              <li><a href="profil.html">Profil</a></li>
+              <li><a href="galeri.html">Galeri</a></li>
+              <li><a href="artikel.html">Artikel</a></li>
+              <li><a href="kontak.html">Kontak</a></li>
+            </ul>
+          </nav>
+          <div class="footer__social">
+            <h4>Ikuti Kami</h4>
+            <a href="https://facebook.com/GrrmKediri" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg>
+              Grrm Kediri
+            </a>
+            <a href="https://instagram.com/grrm_kediri" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2 0 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 3.2a6.6 6.6 0 100 13.2 6.6 6.6 0 000-13.2zm0 10.9a4.3 4.3 0 110-8.6 4.3 4.3 0 010 8.6zm6.8-11.2a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
+              grrm_kediri
+            </a>
+            <a href="https://tiktok.com/@grrm.kediri" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M16.6 5.8a4.7 4.7 0 01-1.1-2.8h-3v12.5a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V9.8a5.8 5.8 0 105 5.8V9.5a7.6 7.6 0 004.5 1.4V7.8a4.6 4.6 0 01-3.5-2z"/></svg>
+              grrm.kediri
+            </a>
+            <a href="https://youtube.com/@GRRMKediri" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.5-5.2a2.8 2.8 0 00-2-2C18.7 4.3 12 4.3 12 4.3s-6.7 0-8.5.5a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.5 5.2a2.8 2.8 0 002 2c1.8.5 8.5.5 8.5.5s6.7 0 8.5-.5a2.8 2.8 0 002-2C23 15.5 23 12 23 12zM9.8 15.5v-7l6 3.5-6 3.5z"/></svg>
+              GRRM Kediri
+            </a>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          © <span data-year></span> <b>Yayasan Jalur Langit Kediri</b> — Gerakan Resik-resik Masjid Kediri. All rights reserved.
+        </div>
+      </div>
+    </footer>
+  `;
+  const footerPlaceholder = document.getElementById('footer-placeholder');
+  if (footerPlaceholder) footerPlaceholder.innerHTML = footerHTML;
+
+  // 3. LOGIKA UI
+  document.querySelectorAll('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
+
+  const nav = document.querySelector('.nav');
+  const isHomePage = location.pathname.endsWith('/') || location.pathname.endsWith('index.html');
+  
+  if (!isHomePage) {
+    nav?.classList.add('is-solid'); // Paksa navbar putih jika bukan di beranda
   } else {
-    init();
+    const onScroll = () => nav?.classList.toggle('is-solid', window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
-})();
+
+  const toggle = document.querySelector('.nav__toggle');
+  const links  = document.querySelector('.nav__links');
+  toggle?.addEventListener('click', () => {
+    const open = links.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  links?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('is-open');
+    toggle?.setAttribute('aria-expanded', 'false');
+  }));
+
+  const page = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav__links a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href === page || (page === 'index.html' && href === 'index.html')) a.classList.add('is-active');
+  });
+
+  // 4. ANIMASI REVEAL
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    if (!el.style.getPropertyValue('--d')) el.style.setProperty('--d', `${(i % 6) * 90}ms`);
+    io.observe(el);
+  });
+
+  // 5. HERO SLIDER
+  const slides = [...document.querySelectorAll('.hero__slide')];
+  const dotsBox = document.querySelector('.hero__dots');
+  if (slides.length) {
+    let idx = 0, timer;
+    if (dotsBox) {
+      dotsBox.innerHTML = slides.map((_, i) =>
+        `<button aria-label="Slide ${i + 1}" class="${i === 0 ? 'is-active' : ''}"></button>`).join('');
+    }
+    const dots = [...dotsBox.querySelectorAll('button')];
+    const go = n => {
+      idx = (n + slides.length) % slides.length;
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+    };
+    const play = () => { clearInterval(timer); timer = setInterval(() => go(idx + 1), 6000); };
+    document.querySelector('.hero__nav--next')?.addEventListener('click', () => { go(idx + 1); play(); });
+    document.querySelector('.hero__nav--prev')?.addEventListener('click', () => { go(idx - 1); play(); });
+    dots.forEach((d, i) => d.addEventListener('click', () => { go(i); play(); }));
+    play();
+  }
+});

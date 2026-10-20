@@ -1,61 +1,68 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galeri - GRRM</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/variables.css" />
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/responsive.css" />
-    <!-- GLightbox CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galeri Kegiatan — GRRM Kediri</title>
+<meta name="description" content="Dokumentasi foto kegiatan Gerakan Resik-resik Masjid Kediri.">
+<link rel="icon" href="assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="ui-balanced">
+<body>
 
 <div id="header-placeholder"></div>
 
-  <section class="page-hero">
-    <div class="container">
-      <h1>Galeri</h1>
-      <nav class="breadcrumb" aria-label="Breadcrumb">
-        <a href="index.html">Home</a>
-        <span aria-hidden="true">›</span>
-        <span aria-current="page">Galeri</span>
-      </nav>
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow reveal">Dokumentasi</span>
+    <h1 class="section-title reveal" style="font-size: clamp(2rem, 4vw, 3rem);">Galeri Kegiatan</h1>
+    <p class="section-lead reveal">Kumpulan momen dan aksi nyata relawan GRRM Kediri dalam memakmurkan masjid.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    
+    <!-- Toolbar Pencarian (Filter Bulan Dihapus) -->
+    <div class="toolbar reveal" style="justify-content: center; margin-bottom: 50px;">
+      <label class="search" style="max-width: 500px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" id="gallerySearch" placeholder="Cari nama masjid atau kegiatan…">
+      </label>
     </div>
-  </section>
 
-  <main id="main" class="section">
-    <div class="container">
-
-      <div class="section-header section-header-left">
-        <h2>Dokumentasi</h2>
-        <p class="section-desc">Foto kegiatan GRRM per album.</p>
+    <!-- Wadah Galeri (Diisi oleh JS) -->
+    <div id="galleryContainer">
+      <!-- Skeleton Loading -->
+      <div class="gallery-grid">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
       </div>
-
-      <div class="filter-bar" role="group" aria-label="Filter album">
-        <span class="filter-label">Tahun:</span>
-        <button class="filter-chip active" data-filter="all" type="button">Semua</button>
-      </div>
-
-      <div class="empty-state" id="galeriEmpty" hidden>
-        <p>Belum ada album untuk filter ini.</p>
-      </div>
-
     </div>
-  </main>
 
-  <div id="footer-placeholder"></div>
-  
-  <script src="assets/js/layout.js"></script>
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/blogger-api.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>  
-  <script src="assets/js/glightbox-init.js"></script>                                      
-  <script src="assets/js/app-galeri.js"></script>
+    <!-- Tombol Muat Lebih Banyak -->
+    <div style="text-align:center; margin-top: 30px;">
+      <button class="btn btn--primary" id="loadMoreBtn" style="display: none;">Muat Lebih Banyak</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Lightbox dengan Tombol Tutup -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Tutup">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <img src="" alt="Zoomed Image" id="lightboxImg">
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/blogger.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/galeri.js"></script>
 </body>
 </html>

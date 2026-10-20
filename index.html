@@ -1,167 +1,141 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="GRRM - Gerakan Resik Resik Masjid Kediri" />
-  <title>GRRM - Gerakan Resik Resik Masjid</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/variables.css" />
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/responsive.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yayasan Jalur Langit Kediri — Gerakan Resik-resik Masjid</title>
+<meta name="description" content="Gerakan Resik-resik Masjid (GRRM) Kediri — gerakan sosial gratis memakmurkan dan menjaga kebersihan masjid di Kediri.">
+<link rel="icon" href="assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="ui-balanced">
+<body>
 
+<!-- ============ NAVBAR ============ -->
 <div id="header-placeholder"></div>
 
-  <main id="main">
+<!-- ============ 1. HERO SLIDER ============ -->
+<section class="hero" id="beranda">
+<article class="hero__slide is-active" style="--img:url('../img/slide-1.webp')">
+    <div class="hero__content">
+      <span class="hero__eyebrow">Yayasan Jalur Langit Kediri</span>
+      <h1 class="hero__title">Selamat Datang di Website Yayasan Jalur Langit Kediri</h1>
+      <p class="hero__sub">Gerakan Resik-resik Masjid Kediri</p>
+      <p class="hero__desc">Bersih masjidnya, tenang hatinya. Bergerak bersama menjaga kebersihan dan kesucian masjid — gratis, terbuka untuk umum, Lillahi Ta'ala.</p>
+      <div class="hero__actions">
+        <a href="#tentang-grrm" class="btn btn--accent">Kenali GRRM</a>
+        <a href="kontak.html" class="btn btn--ghost">Gabung Kegiatan</a>
+      </div>
+    </div>
+  </article>
 
-    <section class="hero" id="hero" aria-label="Sambutan">
-      <div class="hero-slider">
-        <div class="hero-slide active" style="background-image: url('assets/images/slide-1.webp');">
-          <div class="hero-overlay"></div>
-          <div class="hero-content">
-            <div class="hero-content-inner">
-              <span class="hero-tag">Selamat Datang</span>
-              <h1>Bersama Resik Resik Masjid</h1>
-              <p>Gotong royong membersihkan masjid dan lingkungan Kota Kediri.</p>
-              <a href="tentang.html" class="btn btn-hero">Selengkapnya</a>
-            </div>
-          </div>
-        </div>
-        <div class="hero-slide" style="background-image: url('assets/images/slide-2.webp');">
-          <div class="hero-overlay"></div>
-          <div class="hero-content">
-            <div class="hero-content-inner">
-              <span class="hero-tag">Kolaborasi</span>
-              <h1>Bersama Menjaga Kebersihan</h1>
-              <p>Kolaborasi warga, komunitas, dan pemuda dalam aksi nyata.</p>
-              <a href="galeri.html" class="btn btn-hero">Lihat Kegiatan</a>
-            </div>
-          </div>
-        </div>
-        <div class="hero-slide" style="background-image: url('assets/images/slide-3.webp');">
-          <div class="hero-overlay"></div>
-          <div class="hero-content">
-            <div class="hero-content-inner">
-              <span class="hero-tag">Aksi Nyata</span>
-              <h1>Aksi Nyata Untuk Kediri</h1>
-              <p>Setiap langkah kecil membawa perubahan besar.</p>
-              <a href="kontak.html" class="btn btn-hero">Hubungi Kami</a>
-            </div>
-          </div>
+<article class="hero__slide" style="--img:url('../img/slide-2.webp')">
+    <div class="hero__content">
+      <span class="hero__eyebrow">Sosial • Gratis • Istiqomah</span>
+      <h2 class="hero__title">Memakmurkan Masjid, Membersihkan Hati</h2>
+      <p class="hero__sub">Resik Atine, Resik Masjid'e, Istiqomah</p>
+      <p class="hero__desc">Setiap jumat dan akhir pekan kami menyisir masjid-masjid di Kediri bersama relawan.</p>
+      <div class="hero__actions">
+        <a href="galeri.html" class="btn btn--accent">Lihat Galeri</a>
+        <a href="profil.html" class="btn btn--ghost">Visi & Misi</a>
+      </div>
+    </div>
+  </article>
+
+ <article class="hero__slide" style="--img:url('../img/slide-3.webp')">
+    <div class="hero__content">
+      <span class="hero__eyebrow">Terbuka untuk Umum</span>
+      <h2 class="hero__title">Bersama Menjaga Rumah Allah</h2>
+      <p class="hero__sub">Tanpa Biaya • Tanpa Muatan Politis</p>
+      <p class="hero__desc">Menjadi inspirasi masyarakat untuk lebih peduli terhadap kebersihan lingkungan sekitar masjid.</p>
+      <div class="hero__actions">
+        <a href="artikel.html" class="btn btn--accent">Berita Terbaru</a>
+        <a href="kontak.html" class="btn btn--ghost">Hubungi Kami</a>
+      </div>
+    </div>
+  </article>
+
+  <button class="hero__nav hero__nav--prev" aria-label="Slide sebelumnya">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button class="hero__nav hero__nav--next" aria-label="Slide berikutnya">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+  <div class="hero__dots" role="tablist" aria-label="Navigasi slide"></div>
+</section>
+
+<!-- ============ 2. TENTANG JALUR LANGIT ============ -->
+<section class="section" id="tentang-jalur-langit">
+  <div class="container split">
+    <div class="split__body reveal">
+      <span class="eyebrow">Tentang Kami</span>
+      <h2 class="section-title">Tentang Jalur Langit Kediri</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Yayasan Jalur Langit Kediri adalah lembaga sosial keagamaan yang berfokus pada pemberdayaan masjid dan masyarakat di wilayah Kabupaten Kediri.</p>
+      <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Kami percaya bahwa masjid yang bersih, nyaman, dan terawat akan menghadirkan kekhusyukan ibadah serta mempererat ukhuwah Islamiyah di tengah masyarakat.</p>
+      <a href="profil.html" class="btn btn--primary" style="margin-top:22px">Selengkapnya →</a>
+    </div>
+    <div class="split__media reveal">
+      <div class="split__frame">
+        <img src="assets/img/logo-jalurlangit.webp" alt="Logo Yayasan Jalur Langit Kediri">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. TENTANG GRRM ============ -->
+<section class="section section--tint" id="tentang-grrm">
+  <div class="container split split--reverse">
+    <div class="split__media reveal">
+      <div class="split__frame">
+        <img src="assets/img/logo-grrm.webp" alt="Logo GRRM Kediri">
+      </div>
+    </div>
+    <div class="split__body reveal">
+      <span class="eyebrow">Program Unggulan</span>
+      <h2 class="section-title">Tentang GRRM Kediri</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Gerakan Resik-resik Masjid (GRRM) Kediri adalah gerakan sosial yang digagas Yayasan Jalur Langit Kediri untuk membersihkan dan merawat masjid secara gratis.</p>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Gerakan ini terbuka untuk masyarakat umum, tanpa dipungut biaya, dan tanpa muatan politis maupun golongan.</p>
+      <div class="motto" style="margin-top:22px">“Resik Atine, <b>Resik Masjid'e</b>, Istiqomah”</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. KATA PENGANTAR ============ -->
+<section class="section" id="kata-pengantar">
+  <div class="container">
+    <div class="letter reveal">
+      <div class="letter__inner">
+        <span class="eyebrow" style="color:var(--yellow-400)">Kata Pengantar</span>
+        <h2 class="section-title" style="color:#fff;margin-top:12px">Salam Hangat dari Kami</h2>
+        <p><strong>Dengan hormat,</strong></p>
+        <p>Segala puji bagi Allah SWT yang telah memberikan nikmat iman dan kesehatan sehingga kita dapat melaksanakan ibadah dengan baik, serta sholawat dan salam semoga selalu tercurahkan kepada junjungan kita Nabi Muhammad SAW yang telah menunjukkan jalan yang benar bagi umatnya.</p>
+        <p>Dalam rangka upaya ikut <strong style="color:var(--yellow-400)">MEMAKMURKAN MASJID</strong>, maka kami Yayasan Jalur Langit Kediri melakukan kegiatan <strong style="color:var(--yellow-400)">Gerakan Resik-Resik Masjid GRATIS</strong> untuk ikut memberikan manfaat kepada masyarakat, antara lain:</p>
+        <ul>
+          <li>Salah satu sumbangsih dalam beribadah sosial.</li>
+          <li>Menjaga kebersihan dan kesucian masjid agar lebih nyaman dan khusyuk.</li>
+          <li>Menciptakan lingkungan yang sehat.</li>
+          <li>Menjadi inspirasi bagi masyarakat untuk lebih peduli terhadap lingkungan sekitar.</li>
+          <li>Memberikan ketenangan batin atau efek <em>spiritual healing</em>.</li>
+          <li>Mempererat ukhuwah Islamiyah.</li>
+          <li>Terbuka untuk umum dan <strong style="color:var(--yellow-400)">GRATIS</strong>, hanya berharap atas ridho Allah SWT.</li>
+        </ul>
+        <p>Demikian kami sampaikan, mohon doa restu serta dukungan dan bimbingannya agar Gerakan Resik-Resik Masjid Kediri Gratis selalu <strong style="color:var(--yellow-400)">ISTIQOMAH</strong>.</p>
+        <div class="letter__sign">
+          <p style="margin:0;color:rgba(255,255,255,.6)">Hormat Kami,</p>
+          <strong>Gerakan Resik-Resik Masjid Kediri</strong>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <button class="hero-arrow hero-prev" id="heroPrev" aria-label="Slide sebelumnya">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <button class="hero-arrow hero-next" id="heroNext" aria-label="Slide selanjutnya">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
+<!-- ============ FOOTER ============ -->
+<div id="footer-placeholder"></div>
 
-      <div class="hero-dots" id="heroDots" role="tablist" aria-label="Navigasi slide">
-        <button type="button" class="dot active" data-index="0" role="tab" aria-label="Slide 1" aria-current="true"></button>
-        <button type="button" class="dot" data-index="1" role="tab" aria-label="Slide 2"></button>
-        <button type="button" class="dot" data-index="2" role="tab" aria-label="Slide 3"></button>
-      </div>
-    </section>
-
-    <section class="section section-profil" id="profil">
-      <div class="container profil-grid">
-        <div class="profil-text">
-          <span class="section-tag">Profil</span>
-          <h2>Gerakan Resik Resik Masjid</h2>
-          <p>Organisasi masyarakat yang bergerak di bidang kebersihan masjid, edukasi warga, dan aksi sosial di Kota Kediri.</p>
-          <p>Bersama kami menciptakan lingkungan yang bersih, sehat, dan nyaman untuk semua.</p>
-          <a href="tentang.html" class="btn btn-outline">Baca Selengkapnya</a>
-        </div>
-        <div class="profil-image profil-image-placeholder">
-          <span>Foto Profil</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-tentang" id="tentang">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Tentang</span>
-          <h2>Apa yang Kami Lakukan</h2>
-          <p class="section-desc">Wadah kolaborasi masyarakat Kediri untuk lingkungan bersih.</p>
-        </div>
-        <div class="cards">
-          <div class="card">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
-            </div>
-            <h3>Peduli Lingkungan</h3>
-            <p>Aksi kebersihan, penghijauan, dan pengelolaan sampah.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <h3>Kolaborasi</h3>
-            <p>Bersama warga, komunitas, sekolah, dan pemerintah.</p>
-          </div>
-          <div class="card">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            </div>
-            <h3>Edukasi</h3>
-            <p>Kampanye dan kegiatan untuk kesadaran lingkungan.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-sejarah" id="sejarah">
-      <div class="container sejarah-grid">
-        <div class="sejarah-image sejarah-image-placeholder">
-          <span>Foto Sejarah</span>
-        </div>
-        <div class="sejarah-text">
-          <span class="section-tag">Sejarah</span>
-          <h2>Awal Berdirinya GRRM</h2>
-          <p>Berawal dari keprihatinan warga terhadap kebersihan masjid dan lingkungan di Kota Kediri.</p>
-          <p>Dari diskusi kecil RT/RW, tumbuh menjadi gerakan yang melibatkan berbagai elemen masyarakat.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-visi-misi" id="visi-misi">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Arah Gerakan</span>
-          <h2>Visi &amp; Misi</h2>
-        </div>
-        <div class="vm-grid">
-          <div class="vm-card vm-visi">
-            <h3>Visi</h3>
-            <p>Menjadikan Kediri sebagai kota bersih, sehat, hijau, dan berkelanjutan.</p>
-          </div>
-          <div class="vm-card vm-misi">
-            <h3>Misi</h3>
-            <ul>
-              <li>Aksi kebersihan rutin &amp; berkelanjutan.</li>
-              <li>Edukasi dan kampanye masyarakat.</li>
-              <li>Kolaborasi dengan berbagai pihak.</li>
-              <li>Program penghijauan &amp; pengelolaan sampah.</li>
-              <li>Libatkan generasi muda.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <div id="footer-placeholder"></div>
-  
-  <script src="assets/js/layout.js"></script>
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/main.js"></script>
+<!-- SCRIPT JS -->
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
