@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legalitas Yayasan — GRRM Kediri</title>
+<meta name="description" content="Dokumen legalitas resmi Yayasan Jalur Langit Kediri.">
+<link rel="icon" href="assets/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<!-- HEADER PAGE (Page Hero) -->
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow reveal">Transparansi</span>
+    <h1 class="section-title reveal" style="font-size: clamp(2rem, 4vw, 3rem);">Legalitas Yayasan</h1>
+    <p class="section-lead reveal">Informasi resmi dan dokumen hukum Yayasan Jalur Langit Kediri sebagai bentuk transparansi dan amanah kepada masyarakat.</p>
+  </div>
+</section>
+
+<!-- KONTEN LEGALITAS -->
+<section class="section">
+  <div class="container">
+    
+    <!-- 1. Tabel Data Administrasi -->
+    <div class="reveal" style="max-width: 900px; margin: 0 auto;">
+      <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 24px; text-align: center;">Data Administrasi</h2>
+      <table class="legal-table">
+        <tbody>
+          <tr>
+            <th>Nama Yayasan</th>
+            <td>: YAYASAN JALUR LANGIT KEDIRI</td>
+          </tr>
+          <tr>
+            <th>Surat Keterangan Domisili</th>
+            <td>: Kepala Desa Sukorejo, Kab. Kediri<br>
+                No: 520/386/418.84.06/2025<br>
+                Alamat: Perumahan Sukorejo Permai B5, Katang, Ngasem, Kabupaten Kediri</td>
+          </tr>
+          <tr>
+            <th>Telepon</th>
+            <td>: 08222 321 3336</td>
+          </tr>
+          <tr>
+            <th>Jenis Usaha</th>
+            <td>: Sosial Masyarakat</td>
+          </tr>
+          <tr>
+            <th>Jenis Kegiatan</th>
+            <td>: Gerakan Resik Resik Masjid Kediri Gratis</td>
+          </tr>
+          <tr>
+            <th>Akta Pendirian</th>
+            <td>: Notaris Mimik Tri Utari, SH., M.KN<br>
+                No: 01, Tanggal: 21 April 2025</td>
+          </tr>
+          <tr>
+            <th>Surat Kehakiman</th>
+            <td>: AHU-0012156.AH.01.12.Tahun 2025<br>
+                Tanggal: 30 April 2025</td>
+          </tr>
+          <tr>
+            <th>NPWP</th>
+            <td>: 1000.000.0202.8673</td>
+          </tr>
+          <tr>
+            <th>Surat Dinas Sosial</th>
+            <td>: <span style="color: var(--yellow-600); font-weight: 700;">Dalam Proses Pengurusan</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. Dokumen Legal (Gambar) -->
+    <div class="reveal" style="margin-top: 60px;">
+      <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 10px; text-align: center;">Dokumen Legalitas</h2>
+      <p style="text-align: center; color: var(--muted); margin-bottom: 40px;">Klik pada gambar untuk memperbesar dokumen.</p>
+      
+      <div class="doc-grid">
+        
+        <!-- Card Akta Pendirian -->
+        <div class="doc-card" onclick="openLightbox('assets/img/legal/akta-pendirian.jpg')">
+          <img src="assets/img/legal/akta-pendirian.jpg" alt="Akta Pendirian">
+          <div class="doc-card__title">Akta Pendirian Yayasan</div>
+        </div>
+
+        <!-- Card Surat Kehakiman -->
+        <div class="doc-card" onclick="openLightbox('assets/img/legal/surat-kehakiman.jpg')">
+          <img src="assets/img/legal/surat-kehakiman.jpg" alt="Surat Kehakiman">
+          <div class="doc-card__title">Surat Kehakiman (Kemenkumham)</div>
+        </div>
+
+        <!-- Card NPWP -->
+        <div class="doc-card" onclick="openLightbox('assets/img/legal/npwp.jpg')">
+          <img src="assets/img/legal/npwp.jpg" alt="NPWP">
+          <div class="doc-card__title">Surat Keterangan Pajak & NPWP</div>
+        </div>
+
+        <!-- Card Domisili -->
+        <div class="doc-card" onclick="openLightbox('assets/img/legal/domisili.jpg')">
+          <img src="assets/img/legal/domisili.jpg" alt="Surat Keterangan Domisili">
+          <div class="doc-card__title">Surat Keterangan Domisili</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Lightbox untuk Gambar Dokumen -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Tutup">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <img src="" alt="Zoomed Document" id="lightboxImg">
+</div>
+
+<div id="footer-placeholder"></div>
+
+<!-- SCRIPT JS -->
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  // Logika Lightbox Sederhana
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbClose = document.getElementById('lightboxClose');
+
+  window.openLightbox = (src) => {
+    lbImg.src = src;
+    lb.classList.add('is-open');
+  };
+
+  const closeLb = () => lb.classList.remove('is-open');
+  lbClose.addEventListener('click', closeLb);
+  lb.addEventListener('click', (e) => {
+    if (e.target === lb) closeLb();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLb();
+  });
+</script>
+</body>
+</html>

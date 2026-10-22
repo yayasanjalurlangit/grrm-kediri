@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <nav class="nav__links" aria-label="Navigasi utama">
           <a href="index.html">Beranda</a>
           <a href="profil.html">Profil</a>
+          <a href="legalitas.html">Legalitas</a>
           <a href="galeri.html">Galeri</a>
           <a href="artikel.html">Artikel</a>
           <a href="kontak.html">Kontak</a>
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <ul>
               <li><a href="index.html">Beranda</a></li>
               <li><a href="profil.html">Profil</a></li>
+              <a href="legalitas.html">Legalitas</a>
               <li><a href="galeri.html">Galeri</a></li>
               <li><a href="artikel.html">Artikel</a></li>
               <li><a href="kontak.html">Kontak</a></li>
