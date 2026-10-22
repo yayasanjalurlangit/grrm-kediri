@@ -907,3 +907,10 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
 @media (max-width: 768px) {
   .legal-table th { width: 45%; }
 }
+
+/* Grid 2 Kolom yang responsif */
+.grid-2 { grid-template-columns: 1fr 1fr; }
+
+@media (max-width: 768px) {
+  .grid-2 { grid-template-columns: 1fr; } /* Jadi 1 kolom di HP */
+}
