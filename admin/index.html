@@ -177,7 +177,7 @@
       if (!res.ok) throw new Error("Gagal mengambil data");
       
       const data = await res.json();
-      const posts = data.items || [];
+      const posts = (data.items || []).filter(p => !(p.labels && p.labels.includes('struktur-organisasi')));
 
       if (posts.length === 0) {
         container.innerHTML = '<p style="text-align: center; color: #888;">Belum ada artikel.</p>';

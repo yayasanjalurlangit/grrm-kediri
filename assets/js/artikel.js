@@ -115,7 +115,8 @@
         pageToken: nextPageToken || undefined 
       });
       
-      const newPosts = res.items || [];
+      let newPosts = res.items || [];
+      newPosts = newPosts.filter(p => !(p.labels && p.labels.includes('struktur-organisasi')));
       nextPageToken = res.nextPageToken || null;
       
       // Jika API kosong (belum ada post), baru pakai dummy
