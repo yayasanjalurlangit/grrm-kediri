@@ -91,14 +91,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const toggle = document.querySelector('.nav__toggle');
   const links  = document.querySelector('.nav__links');
+  
   toggle?.addEventListener('click', () => {
     const open = links.classList.toggle('is-open');
     toggle.setAttribute('aria-expanded', open);
+    
+    // Kunci scroll body saat menu terbuka
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   });
+
+  // Jika link diklik, tutup menu dan kembalikan scroll
   links?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
     links.classList.remove('is-open');
     toggle?.setAttribute('aria-expanded', 'false');
-  }));
+    document.body.style.overflow = ''; // Kembalikan scroll
+  }))
 
   const page = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav__links a').forEach(a => {

@@ -263,32 +263,175 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   box-shadow:0 40px 90px rgba(0,0,0,.6);transform:scale(.94);transition:transform .45s var(--ease)}
 .lightbox.is-open img{transform:scale(1)}
 
-/* ================= RESPONSIVE ================= */
-@media (max-width:1024px){
-  .grid--3{grid-template-columns:repeat(2,1fr)}
-  .gallery{columns:2}
-  .footer__grid{grid-template-columns:1fr 1fr}
+/* ================= OPTIMASI MOBILE & RESPONSIVE ================= */
+
+@media (max-width: 1024px) {
+  .grid--3 { grid-template-columns: repeat(2, 1fr); }
+  .gallery { columns: 2; }
+  .footer__grid { grid-template-columns: 1fr 1fr; }
+  .article-single__layout { grid-template-columns: 1fr; margin-top: -60px; }
+  .article-single__sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;}
 }
-@media (max-width:860px){
-  .nav__links{position:fixed;inset:var(--nav-h) 0 auto 0;flex-direction:column;gap:4px;
-    padding:22px 20px 30px;background:rgba(255,255,255,.97);backdrop-filter:blur(18px);
-    box-shadow:0 24px 40px rgba(34,16,63,.14);transform:translateY(-130%);transition:transform .45s var(--ease)}
-  .nav__links.is-open{transform:none}
-  .nav__links a{width:100%;color:var(--purple-800);padding:14px 16px;border-radius:12px}
-  .nav__links a.is-active{background:var(--purple-50)}
-  .nav__links a::after{display:none}
-  .nav__toggle{display:grid}
-  .split{grid-template-columns:1fr}
-  .split--reverse .split__media{order:0}
-  .contact-grid{grid-template-columns:1fr}
-  .hero__nav{display:none}
+
+@media (max-width: 860px) {
+  /* --- NAVBAR MOBILE --- */
+  .nav__links {
+    position: fixed; inset: var(--nav-h) 0 auto 0; flex-direction: column; gap: 4px;
+    padding: 22px 20px 30px; background: rgba(255,255,255,.98); backdrop-filter: blur(18px);
+    box-shadow: 0 24px 40px rgba(34,16,63,.14);
+    transform: translateY(-130%); transition: transform .45s var(--ease);
+    height: calc(100vh - var(--nav-h)); /* Full height menu */
+    overflow-y: auto; /* Bisa discroll kalau menu banyak */
+  }
+  .nav__links.is-open { transform: none; }
+  
+  /* PERBAIKAN TEKS: Paksa jadi ungu gelap dan background terang */
+  .nav__links a { 
+    width: 100%; 
+    color: var(--purple-800) !important; /* Paksa gelap */
+    padding: 14px 16px; 
+    border-radius: 12px; 
+    font-size: 1rem; 
+  }
+  .nav__links a.is-active { 
+    background: var(--purple-50) !important; 
+    color: var(--purple-700) !important;
+    font-weight: 800;
+  }
+  .nav__links a::after { display: none; }
+  
+  /* Hilangkan Subtitle di Navbar Mobile */
+  .nav__brand-text span { display: none; }
+  .nav__brand-text { font-size: 1.1rem; }
+
+  /* --- HAMBURGER MENU (Paksa Rapi & Animasi X Sempurna) --- */
+  .nav__toggle { 
+    display: flex !important; 
+    flex-direction: column !important; 
+    justify-content: center !important; 
+    align-items: center !important; 
+    gap: 6px !important; /* Jarak antar garis */
+    background: transparent !important; 
+    width: 44px !important; 
+    height: 44px !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+  
+  .nav__toggle span { 
+    display: block !important;
+    width: 24px !important; 
+    height: 2px !important; 
+    margin: 0 !important; /* Hapus paksa semua margin */
+    padding: 0 !important;
+    background: #fff !important; 
+    border-radius: 2px !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  /* Jika navbar solid, garis jadi ungu */
+  .nav.is-solid .nav__toggle span {
+    background: var(--purple-700) !important;
+  }
+  
+  /* Animasi Silang (X) 
+     Perhitungan: Gap (6px) + tebal garis (2px) = 8px. 
+     Jadi garis atas turun 8px, garis bawah naik 8px. */
+  .nav__toggle[aria-expanded="true"] span:nth-child(1) { 
+    transform: translateY(8px) rotate(45deg) !important; 
+  }
+  .nav__toggle[aria-expanded="true"] span:nth-child(2) { 
+    opacity: 0 !important; 
+  }
+  .nav__toggle[aria-expanded="true"] span:nth-child(3) { 
+    transform: translateY(-8px) rotate(-45deg) !important; 
+  }
+
+  /* --- HERO SLIDER MOBILE (Lebih Pendek) --- */
+  .hero { min-height: 75svh; } 
+  .hero__slide { padding: calc(var(--nav-h) + 40px) 0 80px; }
+  .hero__title { font-size: clamp(1.8rem, 7vw, 2.4rem); margin-bottom: 12px; }
+  .hero__sub { font-size: 0.95rem; margin-bottom: 16px; }
+  .hero__desc { font-size: 0.9rem; margin-bottom: 24px; }
+  
+  /* --- URUTAN GAMBAR & TEKS (Mobile: Gambar di Atas) --- */
+  .split { grid-template-columns: 1fr; gap: 40px; }
+  .split__media { order: -1; } /* Memaksa gambar selalu di atas teks di mobile */
+  .split--reverse .split__media { order: -1; }
+  .split__body { order: 1; }
+
+  /* Lainnya */
+  .contact-grid { grid-template-columns: 1fr; }
+  .hero__nav { display: none; }
+  
+  /* Admin Panel Mobile */
+  .admin-grid { grid-template-columns: 1fr; }
+  .admin-sidebar { position: static; display: flex; overflow-x: auto; gap: 10px; padding: 10px;}
+  .admin-sidebar a { white-space: nowrap; margin-bottom: 0;}
+  .member-row { grid-template-columns: 1fr; gap: 10px; }
+  .member-row .btn-delete { width: 100%; height: 40px; margin-top: 5px;}
 }
-@media (max-width:640px){
-  .grid--3{grid-template-columns:1fr}
-  .gallery{columns:1}
-  .footer__grid{grid-template-columns:1fr;gap:34px}
-  .toolbar{flex-direction:column;align-items:stretch}
-  .search{max-width:none}
+
+@media (max-width: 768px) {
+  /* Bagan Struktur Organisasi */
+  .org-card { min-width: 100%; }
+  .org-level:not(:last-child)::after { display: none; }
+  
+  /* Tabel Legalitas */
+  .legal-table, .legal-table tbody, .legal-table tr, .legal-table th, .legal-table td {
+    display: block; width: 100%;
+  }
+  .legal-table th {
+    padding: 16px 16px 8px 16px; border-bottom: none; border-top: 1px solid var(--line);
+    background: transparent; color: var(--purple-600); font-size: 0.85rem;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .legal-table td {
+    padding: 0 16px 16px 16px; font-size: 1rem; color: var(--ink); font-weight: 600;
+  }
+  
+  /* Artikel Detail */
+  .article-single__sidebar { grid-template-columns: 1fr; }
+  .article-single__img { border-radius: 0; margin-left: -20px; margin-right: -20px; width: calc(100% + 40px); max-height: 300px;}
+  .article-single__header { padding: calc(var(--nav-h) + 40px) 0 100px; }
+  .article-single__title { font-size: 1.8rem; }
+  .post-content { font-size: 1.05rem; }
+  .article-single__main { padding: 20px; margin-top: -60px;}
+}
+
+@media (max-width: 640px) {
+  /* Perbaikan Motto "Resik Atine..." */
+  .motto {
+    display: block; /* Ubah dari inline-flex ke block agar teks tidak terpotong */
+    text-align: center;
+    line-height: 1.6;
+    padding: 16px 20px;
+    border-radius: 16px;
+  }
+
+  /* Grid & Galeri */
+  .grid--3 { grid-template-columns: 1fr; }
+  .gallery { columns: 1; }
+  .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  
+  /* === FOOTER MOBILE === */
+  .footer { padding-top: 50px; }
+  .footer__grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+  .footer__brand { display: flex; flex-direction: column; align-items: center; }
+  .footer__logo { width: 70px; height: 70px; margin-bottom: 16px; }
+  .footer__brand p { margin: 0 auto; max-width: 85%; font-size: 0.85rem; }
+  .footer__nav ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 20px; }
+  .footer__nav li { margin-bottom: 0; }
+  .footer__social { align-items: center; justify-content: center; }
+  
+  /* Toolbar Pencarian */
+  .toolbar { flex-direction: column; align-items: stretch; gap: 15px;}
+  .search { max-width: none; }
+  .chips { justify-content: center; }
+  
+  /* Tombol Hero */
+  .hero__actions { flex-direction: column; width: 100%; }
+  .hero__actions .btn { width: 100%; justify-content: center; }
 }
 
 /* ================= PAGE HERO (Header Halaman Dalam) ================= */
