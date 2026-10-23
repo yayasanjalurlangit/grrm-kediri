@@ -165,16 +165,7 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   display:grid;place-items:center;border-radius:50%;background:var(--purple-700);color:#fff;
   font-size:.7rem;font-weight:800}
 .org-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
-.org-card{text-align:center;padding:26px 20px;border-radius:var(--radius);background:#fff;
-  border:1px solid var(--line);box-shadow:var(--shadow-s);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
-.org-card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
-.org-card__avatar{width:76px;height:76px;margin:0 auto 14px;border-radius:50%;
-  background:linear-gradient(140deg,var(--purple-600),var(--purple-500));
-  display:grid;place-items:center;color:#fff;font-weight:900;font-size:1.4rem;
-  box-shadow:0 10px 24px rgba(78,42,147,.28)}
-.org-card__role{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--yellow-600);margin-bottom:4px}
-.org-card__name{font-weight:700;color:var(--purple-800)}
+
 
 /* Search & Filter */
 .toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:34px}
@@ -410,6 +401,7 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
 
   /* Grid & Galeri */
   .grid--3 { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
   .gallery { columns: 1; }
   .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   
@@ -903,78 +895,6 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
 }
 
 /* ================= WIDGET ARTIKEL TERKAIT ================= */
-.related-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.related-item {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  text-decoration: none;
-  group: hover;
-}
-.related-item:hover .related-title {
-  color: var(--purple-600);
-}
-.related-img {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  object-fit: cover;
-  background: var(--purple-100);
-  flex-shrink: 0;
-}
-.related-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.related-title {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.4;
-  transition: color 0.3s;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.related-meta {
-  font-size: 0.75rem;
-  color: var(--purple-500);
-  font-weight: 600;
-}
-
-/* Perbaikan Gambar di dalam Konten */
-.post-content img {
-  width: 100% !important; /* Paksa lebar penuh */
-  height: auto !important;
-  max-width: 100%;
-  border-radius: 8px;
-  margin: 1.5rem 0;
-  display: block;
-  object-fit: cover;
-}
-
-/* Perbaikan Widget Artikel Terbaru */
-.related-img {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  object-fit: cover;
-  background-color: var(--purple-50); /* Warna latar jika gambar gagal dimuat */
-  border: 1px solid var(--line);
-  flex-shrink: 0;
-}
-.related-title {
-  display: -webkit-box;
-  -webkit-line-clamp: 3; /* Batasi maksimal 3 baris teks */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
 
 /* Avatar dengan Foto */
 .org-card__avatar {
@@ -1049,9 +969,6 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
 @media (max-width: 768px) {
   .legal-table th { width: 45%; }
 }
-
-/* Grid 2 Kolom yang responsif */
-.grid-2 { grid-template-columns: 1fr 1fr; }
 
 @media (max-width: 768px) {
   .grid-2 { grid-template-columns: 1fr; } /* Jadi 1 kolom di HP */
