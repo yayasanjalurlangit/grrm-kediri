@@ -254,6 +254,26 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   box-shadow:0 40px 90px rgba(0,0,0,.6);transform:scale(.94);transition:transform .45s var(--ease)}
 .lightbox.is-open img{transform:scale(1)}
 
+/* ================= PERBAIKAN GAMBAR DI MODAL / LIGHTBOX ================= */
+.lightbox img, 
+.modal-doc img, /* Jaga-jaga jika ada class khusus */
+.doc-modal img {
+  display: block !important;
+  margin: 0 auto !important; /* Memaksa gambar berada di tengah */
+  object-fit: contain !important; /* Memastikan seluruh dokumen terlihat tanpa terpotong */
+  max-width: 100% !important;
+  height: auto !important;
+  transform: scale(1) !important; /* Mencegah efek zoom aneh di mobile */
+}
+
+/* Jika gambar dibungkus oleh tag <p> atau <div>, pastikan pembungkusnya juga center */
+.lightbox p, 
+.modal-doc p {
+  text-align: center !important;
+  display: flex;
+  justify-content: center;
+}
+
 /* ================= OPTIMASI MOBILE & RESPONSIVE ================= */
 
 @media (max-width: 1024px) {
