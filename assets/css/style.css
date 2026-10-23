@@ -218,23 +218,139 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
 .contact-card p,.contact-card a{color:var(--muted);font-size:.94rem;word-break:break-word}
 .contact-card a:hover{color:var(--purple-700);font-weight:600}
 
-/* ================= FOOTER ================= */
-.footer{background:var(--purple-900);color:rgba(255,255,255,.78);padding:70px 0 0;position:relative;overflow:hidden}
-.footer::before{content:"";position:absolute;inset:-140px -140px auto auto;width:420px;height:420px;
-  border-radius:50%;background:radial-gradient(circle,rgba(255,197,49,.14),transparent 70%)}
-.footer__grid{position:relative;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:44px;padding-bottom:52px}
-.footer__logo{width:96px;height:96px;object-fit:contain;margin-bottom:18px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.35))}
-.footer__brand p{font-size:.9rem;max-width:34ch;color:rgba(255,255,255,.66)}
-.footer h4{color:#fff;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px;font-weight:800}
-.footer__nav ul{list-style:none;display:grid;gap:11px}
-.footer__nav a{font-size:.92rem;color:rgba(255,255,255,.72);transition:color .3s,padding-left .3s}
-.footer__nav a:hover{color:var(--yellow-500);padding-left:6px}
-.footer__social{display:grid;gap:11px}
-.footer__social a{display:flex;align-items:center;gap:11px;font-size:.92rem;color:rgba(255,255,255,.72);transition:color .3s,transform .3s}
-.footer__social a:hover{color:var(--yellow-500);transform:translateX(5px)}
-.footer__social svg{width:18px;height:18px;flex:0 0 18px;fill:currentColor}
-.footer__bottom{border-top:1px solid rgba(255,255,255,.12);padding:22px 0;text-align:center;font-size:.8rem;color:rgba(255,255,255,.5)}
-.footer__bottom b{color:var(--yellow-500);font-weight:700}
+/* ================= FOOTER UTAMA ================= */
+.footer {
+  background: var(--purple-900);
+  color: rgba(255,255,255,.78);
+  padding: 70px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: -140px -140px auto auto;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,197,49,.14), transparent 70%);
+}
+.footer__bottom {
+  border-top: 1px solid rgba(255,255,255,.12);
+  padding: 22px 0;
+  text-align: center;
+  font-size: .8rem;
+  color: rgba(255,255,255,.5);
+  position: relative;
+  z-index: 2;
+}
+.footer__bottom b {
+  color: var(--yellow-500);
+  font-weight: 700;
+}
+/* ================================================= */
+
+.footer__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr; /* 4 Kolom */
+  gap: 40px;
+  padding-bottom: 60px;
+  z-index: 2; /* Memastikan konten di atas efek background */
+}
+
+.footer__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr; /* 4 Kolom */
+  gap: 40px;
+  padding-bottom: 60px;
+}
+
+/* Kolom 1: Teks Besar */
+.footer__title {
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Judul Kecil tiap Kolom */
+.footer__heading {
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* List Info (Lokasi) */
+.footer__info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer__info-list li, 
+.footer__info-list a {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.6;
+  transition: color 0.3s;
+}
+.footer__info-list a:hover { color: var(--yellow-500); }
+
+/* Link Bergaris Bawah (Google Maps & WhatsApp) */
+.footer__link {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.3s;
+}
+.footer__link:hover { color: var(--yellow-500); }
+
+/* Navigasi Footer */
+.footer__nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.footer__nav-list a {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.75);
+  transition: color 0.3s;
+}
+.footer__nav-list a:hover { color: var(--yellow-500); }
+
+/* Ikon Sosial Media */
+.footer__social-icons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.footer__social-icons a {
+  color: rgba(255,255,255,0.8);
+  transition: color 0.3s, transform 0.3s;
+  display: flex;
+}
+.footer__social-icons a:hover {
+  color: var(--yellow-500);
+  transform: translateY(-3px);
+}
+.footer__social-icons svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
 
 /* ================= ANIMASI & STATE ================= */
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .85s var(--ease),transform .85s var(--ease);transition-delay:var(--d,0ms)}
@@ -279,7 +395,7 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
 @media (max-width: 1024px) {
   .grid--3 { grid-template-columns: repeat(2, 1fr); }
   .gallery { columns: 2; }
-  .footer__grid { grid-template-columns: 1fr 1fr; }
+  .footer__grid { grid-template-columns: 1fr 1fr; } 
   .article-single__layout { grid-template-columns: 1fr; margin-top: -60px; }
   .article-single__sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;}
 }
@@ -461,7 +577,11 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   
   /* === FOOTER MOBILE === */
   .footer { padding-top: 50px; }
-  .footer__grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+  .footer__grid { 
+    grid-template-columns: 1fr; 
+    gap: 40px; 
+    text-align: left; /* Ubah dari center ke left agar rapi seperti desain */
+  }
   .footer__brand { display: flex; flex-direction: column; align-items: center; }
   .footer__logo { width: 70px; height: 70px; margin-bottom: 16px; }
   .footer__brand p { margin: 0 auto; max-width: 85%; font-size: 0.85rem; }
