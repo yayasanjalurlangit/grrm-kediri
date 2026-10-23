@@ -348,7 +348,6 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   }
 
   /* --- HERO SLIDER MOBILE (Lebih Pendek) --- */
-  .hero { min-height: 75svh; } 
   .hero__slide { padding: calc(var(--nav-h) + 40px) 0 80px; }
   .hero__title { font-size: clamp(1.8rem, 7vw, 2.4rem); margin-bottom: 12px; }
   .hero__sub { font-size: 0.95rem; margin-bottom: 16px; }
@@ -1057,3 +1056,4 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
 @media (max-width: 768px) {
   .grid-2 { grid-template-columns: 1fr; } /* Jadi 1 kolom di HP */
 }
+

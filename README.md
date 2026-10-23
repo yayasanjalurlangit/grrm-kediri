@@ -1,2 +1,1 @@
 Catatan:
-Wowok mbg
