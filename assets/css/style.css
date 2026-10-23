@@ -236,13 +236,14 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   background: radial-gradient(circle, rgba(255,197,49,.14), transparent 70%);
 }
 .footer__bottom {
-  border-top: 1px solid rgba(255,255,255,.12);
+  background: #150A26; /* Warna ungu sangat gelap */
   padding: 22px 0;
-  text-align: center;
+  text-align: left;
   font-size: .8rem;
   color: rgba(255,255,255,.5);
   position: relative;
   z-index: 2;
+  margin-top: 20px;
 }
 .footer__bottom b {
   color: var(--yellow-500);
@@ -330,6 +331,42 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   transition: color 0.3s;
 }
 .footer__nav-list a:hover { color: var(--yellow-500); }
+
+/* Navigasi dengan Simbol > Kuning */
+.footer__nav-list a::before {
+  content: ">";
+  color: var(--yellow-500);
+  margin-right: 8px;
+  font-weight: 800;
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.footer__nav-list a:hover::before {
+  transform: translateX(4px); /* Animasi geser sedikit saat di-hover */
+}
+
+/* Wadah Logo Sponsor */
+.footer__sponsors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.footer__sponsors img {
+  max-height: 30px; /* Ukuran logo lebih kecil */
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* Opsional: bikin logo jadi putih */
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.footer__sponsors img:hover {
+  opacity: 1;
+}
 
 /* Ikon Sosial Media */
 .footer__social-icons {

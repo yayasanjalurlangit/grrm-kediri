@@ -26,15 +26,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const headerPlaceholder = document.getElementById('header-placeholder');
   if (headerPlaceholder) headerPlaceholder.innerHTML = headerHTML;
 
-  // 2. RENDER FOOTER (Sesuai class di style.css)
+  // 2. RENDER FOOTER
   const footerHTML = `
     <footer class="footer">
       <div class="container">
         <div class="footer__grid">
           
-          <!-- Kolom 1: Brand Title -->
+          <!-- Kolom 1: Brand Title & Follow Us -->
           <div class="footer__brand">
             <h2 class="footer__title">Gerakan<br>Resik Resik<br>Masjid Kediri</h2>
+            
+            <!-- Follow Us Pindah ke Sini -->
+            <div class="footer__social-wrap">
+              <h4 class="footer__heading" style="margin-top: 40px;">FOLLOW US</h4>
+              <div class="footer__social-icons">
+                <a href="https://facebook.com/GrrmKediri" target="_blank" rel="noopener" aria-label="Facebook">
+                  <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg>
+                </a>
+                <a href="https://instagram.com/grrm_kediri" target="_blank" rel="noopener" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2 0 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 3.2a6.6 6.6 0 100 13.2 6.6 6.6 0 000-13.2zm0 10.9a4.3 4.3 0 110-8.6 4.3 4.3 0 010 8.6zm6.8-11.2a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
+                </a>
+                <a href="https://tiktok.com/@grrm.kediri" target="_blank" rel="noopener" aria-label="TikTok">
+                  <svg viewBox="0 0 24 24"><path d="M16.6 5.8a4.7 4.7 0 01-1.1-2.8h-3v12.5a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V9.8a5.8 5.8 0 105 5.8V9.5a7.6 7.6 0 004.5 1.4V7.8a4.6 4.6 0 01-3.5-2z"/></svg>
+                </a>
+                <a href="https://youtube.com/@GRRMKediri" target="_blank" rel="noopener" aria-label="YouTube">
+                  <svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.5-5.2a2.8 2.8 0 00-2-2C18.7 4.3 12 4.3 12 4.3s-6.7 0-8.5.5a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.5 5.2a2.8 2.8 0 002 2c1.8.5 8.5.5 8.5.5s6.7 0 8.5-.5a2.8 2.8 0 002-2C23 15.5 23 12 23 12zM9.8 15.5v-7l6 3.5-6 3.5z"/></svg>
+                </a>
+              </div>
+            </div>
           </div>
 
           <!-- Kolom 2: Lokasi -->
@@ -61,30 +80,27 @@ document.addEventListener('DOMContentLoaded', () => {
             </ul>
           </div>
 
-          <!-- Kolom 4: CTA & Social -->
+          <!-- Kolom 4: CTA & Supported By -->
           <div class="footer__col">
             <h4 class="footer__heading">MAU MASJID ANDA JUGA DIBERSIHKAN?</h4>
             <a href="https://wa.me/6282223213336" target="_blank" rel="noopener" class="footer__link" style="margin-bottom: 40px; display: inline-block;">HUBUNGI ADMIN KAMI ↗</a>
             
-            <h4 class="footer__heading">FOLLOW US</h4>
-            <div class="footer__social-icons">
-              <a href="https://facebook.com/GrrmKediri" target="_blank" rel="noopener" aria-label="Facebook">
-                <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0022 12z"/></svg>
-              </a>
-              <a href="https://instagram.com/grrm_kediri" target="_blank" rel="noopener" aria-label="Instagram">
-                <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2 0 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 3.2a6.6 6.6 0 100 13.2 6.6 6.6 0 000-13.2zm0 10.9a4.3 4.3 0 110-8.6 4.3 4.3 0 010 8.6zm6.8-11.2a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/></svg>
-              </a>
-              <a href="https://tiktok.com/@grrm.kediri" target="_blank" rel="noopener" aria-label="TikTok">
-                <svg viewBox="0 0 24 24"><path d="M16.6 5.8a4.7 4.7 0 01-1.1-2.8h-3v12.5a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V9.8a5.8 5.8 0 105 5.8V9.5a7.6 7.6 0 004.5 1.4V7.8a4.6 4.6 0 01-3.5-2z"/></svg>
-              </a>
-              <a href="https://youtube.com/@GRRMKediri" target="_blank" rel="noopener" aria-label="YouTube">
-                <svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.5-5.2a2.8 2.8 0 00-2-2C18.7 4.3 12 4.3 12 4.3s-6.7 0-8.5.5a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.5 5.2a2.8 2.8 0 002 2c1.8.5 8.5.5 8.5.5s6.7 0 8.5-.5a2.8 2.8 0 002-2C23 15.5 23 12 23 12zM9.8 15.5v-7l6 3.5-6 3.5z"/></svg>
-              </a>
+            <!-- Supported By Pindah ke Sini -->
+            <h4 class="footer__heading">SUPPORTED BY</h4>
+            <div class="footer__sponsors">
+              <!-- SILAKAN TAMBAHKAN 6 LOGO SPONSOR DI SINI -->
+              <img src="assets/img/sponsor1.png" alt="Sponsor 1">
+              <img src="assets/img/sponsor2.png" alt="Sponsor 2">
+              <img src="assets/img/sponsor3.png" alt="Sponsor 3">
             </div>
           </div>
           
         </div>
-        <div class="footer__bottom">
+      </div>
+      
+      <!-- Copyright dipisah dari container agar background bisa full width -->
+      <div class="footer__bottom">
+        <div class="container">
           © <span data-year></span> <b>Yayasan Jalur Langit Kediri</b> — Gerakan Resik-resik Masjid Kediri. All rights reserved.
         </div>
       </div>
