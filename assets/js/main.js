@@ -92,6 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
               <img src="assets/img/sponsor1.png" alt="Sponsor 1">
               <img src="assets/img/sponsor2.png" alt="Sponsor 2">
               <img src="assets/img/sponsor3.png" alt="Sponsor 3">
+              <img src="assets/img/sponsor4.png" alt="Sponsor 4">
+              <img src="assets/img/sponsor5.png" alt="Sponsor 5">
+              <img src="assets/img/sponsor6.png" alt="Sponsor 6">
             </div>
           </div>
           

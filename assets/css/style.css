@@ -360,7 +360,7 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   width: auto;
   object-fit: contain;
   filter: brightness(0) invert(1); /* Opsional: bikin logo jadi putih */
-  opacity: 0.7;
+  opacity: 0.5;
   transition: opacity 0.3s;
 }
 
@@ -613,18 +613,38 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   
   /* === FOOTER MOBILE === */
+  /* === FOOTER MOBILE === */
   .footer { padding-top: 50px; }
   .footer__grid { 
     grid-template-columns: 1fr; 
     gap: 40px; 
-    text-align: left; /* Ubah dari center ke left agar rapi seperti desain */
+    text-align: left; 
   }
-  .footer__brand { display: flex; flex-direction: column; align-items: center; }
+  
+  /* Ubah align-items menjadi flex-start agar rata kiri */
+  .footer__brand { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+  
   .footer__logo { width: 70px; height: 70px; margin-bottom: 16px; }
-  .footer__brand p { margin: 0 auto; max-width: 85%; font-size: 0.85rem; }
-  .footer__nav ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 20px; }
-  .footer__nav li { margin-bottom: 0; }
-  .footer__social { align-items: center; justify-content: center; }
+  
+  /* Pastikan teks paragraf (jika ada) juga rata kiri */
+  .footer__brand p { margin: 0; max-width: 100%; font-size: 0.85rem; }
+  
+  /* Navigasi rata kiri dan menumpuk ke bawah */
+  .footer__nav-list { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 12px; 
+  }
+  
+  /* Ikon sosmed rata kiri */
+  .footer__social-icons {
+    justify-content: flex-start;
+  }
   
   /* Toolbar Pencarian */
   .toolbar { flex-direction: column; align-items: stretch; gap: 15px;}
