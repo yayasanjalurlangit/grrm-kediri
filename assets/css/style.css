@@ -550,7 +550,7 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
     transform: translateY(-8px) rotate(-45deg) !important; 
   }
 
-    .nav__hotline-text {
+  .nav__hotline-text {
     display: none; /* Sembunyikan teks "HOTLINE" */
   }
   
@@ -1301,5 +1301,172 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   .back-to-top svg {
     width: 20px;
     height: 20px;
+  }
+}
+
+/* ================= HALAMAN KONTAK BARU ================= */
+
+/* Layout 2 Kolom */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+/* Kolom Kiri (Info) */
+.contact-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 20px;
+  letter-spacing: -0.03em;
+}
+
+.contact-desc {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 40px;
+  max-width: 420px;
+  line-height: 1.7;
+}
+
+.contact-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contact-details li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.contact-details svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--ink);
+  flex-shrink: 0;
+}
+
+.contact-details a {
+  color: var(--ink);
+  transition: color 0.3s;
+}
+
+.contact-details a:hover {
+  color: var(--purple-600);
+}
+
+/* Kolom Kanan (Form) */
+.contact-form-wrapper {
+  background: #F3F4F6; /* Warna abu-abu terang sesuai referensi */
+  padding: 40px;
+  border-radius: 24px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  transition: box-shadow 0.3s, outline 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--purple-100); /* Efek fokus ungu */
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Tombol Submit */
+.btn-submit {
+  align-self: flex-start;
+  background: var(--ink); /* Warna gelap sesuai referensi */
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-family: inherit;
+  border: none;
+}
+
+.btn-submit:hover {
+  background: var(--purple-800); /* Berubah ungu saat di-hover */
+  transform: translateY(-2px);
+}
+
+/* Peta Bawah */
+.contact-map {
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  box-shadow: var(--shadow-s);
+  line-height: 0; /* Menghilangkan spasi bawah iframe */
+}
+
+.contact-map iframe {
+  width: 100%;
+  height: 450px;
+  border: none;
+}
+
+/* Responsif Mobile */
+@media (max-width: 860px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .contact-form-wrapper {
+    padding: 24px;
+  }
+  
+  .contact-map iframe {
+    height: 350px;
   }
 }

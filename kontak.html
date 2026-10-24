@@ -16,70 +16,66 @@
 <!-- Placeholder Navbar -->
 <div id="header-placeholder"></div>
 
-<!-- HEADER PAGE (Page Hero) -->
-<section class="page-hero">
-  <div class="container">
-    <span class="eyebrow reveal">Hubungi Kami</span>
-    <h1 class="section-title reveal" style="font-size: clamp(2rem, 4vw, 3rem);">Kontak & Lokasi</h1>
-    <p class="section-lead reveal">Kami terbuka untuk kolaborasi, permintaan kegiatan, dan pertanyaan seputar GRRM Kediri.</p>
-  </div>
-</section>
-
 <!-- KONTEN KONTAK -->
-<section class="section">
-  <div class="container">
-    
-    <!-- Grid Kartu Kontak -->
-    <div class="contact-grid reveal">
+<section class="section" style="padding-top: calc(var(--nav-h) + 40px);">
+  <div class="container"> 
+    <div class="contact-layout reveal">
       
-      <!-- Alamat -->
-      <div class="contact-card">
-        <div class="contact-card__icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </div>
-        <h3>Alamat Sekretariat</h3>
-        <p>Perumahan Sukorejo Permai B5, Katang, Sukorejo, Ngasem, Kabupaten Kediri</p>
+      <!-- Kolom Kiri: Informasi -->
+      <div class="contact-info">
+        <h1 class="contact-title">Hubungi Tim<br>Kami</h1>
+        <p class="contact-desc">Ada pertanyaan, ingin berkolaborasi, atau mengundang kami untuk bersih-bersih masjid? Jangan ragu untuk menghubungi kami.</p>
+        
+        <ul class="contact-details">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M3 7l9 6 9-6"/></svg>
+            <a href="mailto:grrmkediri@gmail.com">grrmkediri@gmail.com</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Perumahan Sukorejo Permai B5, Katang, Sukorejo, Ngasem, Kabupaten Kediri</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>
+            <a href="https://wa.me/6282223213336" target="_blank" rel="noopener">08222 321 3336</a>
+          </li>
+        </ul>
       </div>
 
-      <!-- Hotline / WA -->
-      <div class="contact-card">
-        <div class="contact-card__icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>
-        </div>
-        <h3>Hotline / WhatsApp</h3>
-        <p><a href="https://wa.me/6282223213336" target="_blank" rel="noopener">08222 321 3336</a></p>
-      </div>
-
-      <!-- Email Jalur Langit -->
-      <div class="contact-card">
-        <div class="contact-card__icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M3 7l9 6 9-6"/></svg>
-        </div>
-        <h3>Email Jalur Langit Kediri</h3>
-        <p><a href="mailto:jalurlangitkediri@gmail.com">jalurlangitkediri@gmail.com</a></p>
-      </div>
-
-      <!-- Email Admin GRRM -->
-      <div class="contact-card">
-        <div class="contact-card__icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M3 7l9 6 9-6"/></svg>
-        </div>
-        <h3>Email Admin GRRM Kediri</h3>
-        <p><a href="mailto:grrmkediri@gmail.com">grrmkediri@gmail.com</a></p>
+      <!-- Kolom Kanan: Formulir -->
+      <div class="contact-form-wrapper">
+        <form action="#" class="contact-form">
+          <div class="form-group">
+            <label for="nama">Nama Lengkap</label>
+            <input type="text" id="nama" placeholder="Masukkan Nama Lengkap">
+          </div>
+          <div class="form-group">
+            <label for="email">Alamat Email</label>
+            <input type="email" id="email" placeholder="Masukkan Email Anda">
+          </div>
+          <div class="form-group">
+            <label for="phone">Nomor WhatsApp</label>
+            <input type="tel" id="phone" placeholder="Masukkan Nomor WhatsApp">
+          </div>
+          <div class="form-group">
+            <label for="pesan">Pesan</label>
+            <textarea id="pesan" rows="4" placeholder="Tulis Pesan Anda di sini"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">
+            Kirim Pesan &rarr;
+          </button>
+        </form>
       </div>
 
     </div>
 
-    <!-- Google Maps -->
-    <div class="card reveal" style="margin-top:28px; padding:0; overflow:hidden; border-radius:var(--radius);">
+    <!-- Google Maps (Di Bawah) -->
+    <div class="contact-map reveal">
       <iframe 
-        src="https://www.google.com/maps?q=Perumahan+Sukorejo+Permai+B5+Kediri&output=embed" 
-        width="100%" 
-        height="400" 
-        style="border:0; display:block;" 
+        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d494.1051088238837!2d112.0436753!3d-7.8066649!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78572fe7b3289f%3A0xe20f7ace3def4062!2sResik%20Resik%20Masjid%20Kediri%20-%20GRATIS!5e0!3m2!1sen!2sid!4v1792812689772!5m2!1sen!2sid" 
         allowfullscreen="" 
         loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade" 
+        referrerpolicy="strict-origin-when-cross-origin" 
         title="Lokasi Sekretariat GRRM Kediri">
       </iframe>
     </div>
