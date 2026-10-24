@@ -15,7 +15,7 @@
   --font:'Montserrat',system-ui,-apple-system,sans-serif;
 }
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px)}
-body{font-family:var(--font);color:var(--ink);background:var(--white);line-height:1.75;
+body{font-family:var(--font);color:var(--ink);background:var(--white);line-height:1.25;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
@@ -23,7 +23,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none}
 .container{width:min(100% - 40px,var(--container));margin-inline:auto}
 
 /* ================= TIPOGRAFI ================= */
-h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--purple-800)}
+h1,h2,h3,h4{line-height:1.25;font-weight:800;letter-spacing:-.02em;color:var(--purple-800)}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;
   letter-spacing:.18em;text-transform:uppercase;color:var(--purple-600)}
 .eyebrow::before{content:"";width:26px;height:3px;border-radius:2px;background:var(--yellow-500)}
@@ -337,9 +337,9 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
 }
 .footer__info-list li, 
 .footer__info-list a {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: rgba(255,255,255,0.75);
-  line-height: 1.6;
+  line-height: 1.25;
   transition: color 0.3s;
 }
 .footer__info-list a:hover { color: var(--yellow-500); }
@@ -362,10 +362,10 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 }
 .footer__nav-list a {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: rgba(255,255,255,0.75);
   transition: color 0.3s;
 }
@@ -662,7 +662,6 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   
   /* === FOOTER MOBILE === */
-  /* === FOOTER MOBILE === */
   .footer { padding-top: 50px; }
   .footer__grid { 
     grid-template-columns: 1fr; 
@@ -687,7 +686,7 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
     display: flex; 
     flex-direction: column; 
     align-items: flex-start; 
-    gap: 12px; 
+    gap: 6px; 
   }
   
   /* Ikon sosmed rata kiri */
@@ -1049,7 +1048,7 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
 /* Tipografi Konten (Rapi & Nyaman Dibaca) */
 .post-content {
   font-size: 1.125rem;
-  line-height: 1.85;
+  line-height: 1.5;
   color: #2d2d2d;
 }
 .post-content p {
@@ -1330,7 +1329,7 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   font-size: 1rem;
   margin-bottom: 40px;
   max-width: 420px;
-  line-height: 1.7;
+  line-height: 1.25;
 }
 
 .contact-details {
