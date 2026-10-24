@@ -70,6 +70,45 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   transition:transform .35s var(--ease),opacity .3s}
 .nav__toggle span+span{margin-top:5px}
 
+/* --- Navbar Actions (Hotline & Hamburger) --- */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Jarak antara tombol hotline dan hamburger */
+}
+
+/* Tombol Hotline Desktop */
+.nav__hotline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--yellow-500);
+  color: var(--purple-900);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  transition: transform 0.3s var(--ease), background-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  box-shadow: 0 4px 12px rgba(255, 197, 49, 0.3);
+}
+
+.nav__hotline:hover {
+  background-color: var(--yellow-400);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 197, 49, 0.4);
+}
+
+/* Sembunyikan ikon telepon di Desktop (hanya tampil teks) */
+.nav__hotline-icon {
+  display: none; 
+}
+
+/* Jika navbar solid (putih), sesuaikan agar tetap kontras */
+.nav.is-solid .nav__hotline {
+  box-shadow: 0 4px 12px rgba(255, 197, 49, 0.4);
+}
+
 /* navbar solid */
 .nav.is-solid{background:rgba(255,255,255,.86);backdrop-filter:blur(16px) saturate(160%);
   box-shadow:0 2px 24px rgba(34,16,63,.09)}
@@ -509,6 +548,16 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   }
   .nav__toggle[aria-expanded="true"] span:nth-child(3) { 
     transform: translateY(-8px) rotate(-45deg) !important; 
+  }
+
+    .nav__hotline-text {
+    display: none; /* Sembunyikan teks "HOTLINE" */
+  }
+  
+  .nav__hotline-icon {
+    display: block; /* Tampilkan ikon telepon */
+    width: 24px;
+    height: 24px;
   }
 
   /* --- HERO SLIDER MOBILE (Lebih Pendek) --- */
