@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <!-- Copyright dipisah dari container agar background bisa full width -->
       <div class="footer__bottom">
         <div class="container">
-          © <span data-year></span> <b>Yayasan Jalur Langit Kediri</b> — Gerakan Resik-resik Masjid Kediri. All rights reserved.
+          © <span data-year></span> <b>Yayasan Jalur Langit Kediri</b> - Gerakan Resik-resik Masjid Kediri. All rights reserved.
         </div>
       </div>
     </footer>
@@ -187,4 +187,31 @@ document.addEventListener('DOMContentLoaded', () => {
     dots.forEach((d, i) => d.addEventListener('click', () => { go(i); play(); }));
     play();
   }
+    // 6. TOMBOL BACK TO TOP (Pojok Kiri Bawah)
+  const backToTopBtn = document.createElement('button');
+  backToTopBtn.className = 'back-to-top';
+  backToTopBtn.setAttribute('aria-label', 'Kembali ke atas');
+  backToTopBtn.innerHTML = `
+    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  `;
+  document.body.appendChild(backToTopBtn);
+
+  // Logika muncul/hilang saat di-scroll
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backToTopBtn.classList.add('is-visible');
+    } else {
+      backToTopBtn.classList.remove('is-visible');
+    }
+  }, { passive: true });
+
+  // Logika klik untuk kembali ke atas
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
 });

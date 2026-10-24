@@ -1205,3 +1205,52 @@ h1,h2,h3,h4{line-height:1.2;font-weight:800;letter-spacing:-.02em;color:var(--pu
   .grid-2 { grid-template-columns: 1fr; } /* Jadi 1 kolom di HP */
 }
 
+/* ================= FLOATING BACK TO TOP ================= */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px; /* Posisi di kiri bawah */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--yellow-500); /* Warna kuning brand */
+  color: var(--purple-900); /* Ikon warna ungu gelap agar kontras */
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 12px rgba(255, 197, 49, 0.4);
+  cursor: pointer;
+  z-index: 99;
+  
+  /* Efek sembunyi secara default */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.4s var(--ease);
+}
+
+/* Muncul saat di-scroll */
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background-color: var(--yellow-600);
+  transform: translateY(-5px); /* Efek melayang saat di-hover */
+  box-shadow: 0 8px 20px rgba(255, 197, 49, 0.6);
+}
+
+/* Penyesuaian untuk layar HP */
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+  }
+  .back-to-top svg {
+    width: 20px;
+    height: 20px;
+  }
+}
