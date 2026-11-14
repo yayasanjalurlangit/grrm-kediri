@@ -50,12 +50,33 @@
   </div>
 </section>
 
-<!-- Lightbox dengan Tombol Tutup -->
+<!-- Album Modal (Full Screen) -->
+<div class="album-modal" id="albumModal" aria-hidden="true">
+  <div class="album-modal__content">
+    <button class="album-modal__close" id="albumClose" aria-label="Tutup Album">&times;</button>
+    
+    <div class="album-modal__header">
+      <h2 class="album-modal__title" id="albumTitle">Judul Post</h2>
+      <!-- Tanggal & Author akan diisi JS -->
+      <div class="album-modal__meta" id="albumMeta"></div>
+    </div>
+    
+    <div class="album-modal__grid" id="albumGrid">
+      <!-- Foto-foto akan dimasukkan oleh JS -->
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox (Fullscreen dengan Navigasi) -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
   <button class="lightbox__close" id="lightboxClose" aria-label="Tutup">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
   </button>
+  
+  <!-- Tombol Navigasi Kiri & Kanan -->
+  <button class="lightbox__nav lightbox__nav--prev" id="lbPrev" aria-label="Sebelumnya">&#10094;</button>
   <img src="" alt="Zoomed Image" id="lightboxImg">
+  <button class="lightbox__nav lightbox__nav--next" id="lbNext" aria-label="Selanjutnya">&#10095;</button>
 </div>
 
 <div id="footer-placeholder"></div>

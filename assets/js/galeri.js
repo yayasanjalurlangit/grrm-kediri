@@ -1,138 +1,243 @@
-/* Logika Halaman Galeri (Grid & Grup Tanggal) */
+/* Logika Halaman Galeri (Grup Bulan & Album Per Post) */
 (() => {
   const container  = document.getElementById('galleryContainer');
   const search     = document.getElementById('gallerySearch');
   const loadBtn    = document.getElementById('loadMoreBtn');
+  
+  // Lightbox Elements
   const lb         = document.getElementById('lightbox');
   const lbImg      = document.getElementById('lightboxImg');
   const lbClose    = document.getElementById('lightboxClose');
+  const lbPrev     = document.getElementById('lbPrev');
+  const lbNext     = document.getElementById('lbNext');
+  
+  // Album Modal Elements
+  const albumModal = document.getElementById('albumModal');
+  const albumTitle = document.getElementById('albumTitle');
+  const albumMeta  = document.getElementById('albumMeta');
+  const albumGrid  = document.getElementById('albumGrid');
+  const albumClose = document.getElementById('albumClose');
 
-  let allPhotos = [];
+  let allPosts = []; 
   let searchQuery = '';
-  let displayLimit = 12; // Batas awal foto yang ditampilkan
+  let displayLimit = 6; 
 
-  // --- DATA DUMMY (Diperbanyak untuk tes "Muat Lebih Banyak") ---
-  const now = new Date();
-  const dummyPhotos = Array.from({ length: 18 }).map((_, i) => {
-    // Buat variasi tanggal (3 hari terakhir)
-    const d = new Date(now.getTime() - (Math.floor(i / 6) * 86400000)); 
-    return {
-      title: `Kegiatan Masjid ke-${i + 1}`,
-      dateStr: d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
-      img: `assets/img/slide-${(i % 3) + 1}.webp`
-    };
-  });
+  // State untuk navigasi Lightbox
+  let currentImages = [];
+  let currentImageIndex = 0;
 
-  // --- RENDER GRID BERDASARKAN TANGGAL ---
+  // Fungsi Ekstrak Semua Gambar dari HTML Blogger
+  const extractImages = (html) => {
+    if (!html) return [];
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const imgs = Array.from(div.querySelectorAll('img'));
+    return imgs.map(img => {
+      let src = img.src || img.getAttribute('src');
+      if (src && src.startsWith('//')) src = 'https:' + src;
+      // Paksa resolusi asli (s1600)
+      if (src) src = src.replace(/\/s\d+(-c)?\//, '/s1600/');
+      return src;
+    }).filter(src => src);
+  };
+
+  // --- RENDER GALERI UTAMA (KARTU POST) ---
   const render = () => {
-    // 1. Filter berdasarkan pencarian
-    const filtered = allPhotos.filter(p => 
-      p.title.toLowerCase().includes(searchQuery)
-    );
+    const filtered = allPosts.filter(p => p.title.toLowerCase().includes(searchQuery));
 
     if (filtered.length === 0) {
-      container.innerHTML = `<div class="empty">Tidak ada foto yang cocok dengan pencarian Anda.</div>`;
+      container.innerHTML = `<div class="empty">Tidak ada kegiatan yang cocok dengan pencarian Anda.</div>`;
       loadBtn.style.display = 'none';
       return;
     }
 
-    // 2. Batasi jumlah yang tampil
-    const visiblePhotos = filtered.slice(0, displayLimit);
+    const visiblePosts = filtered.slice(0, displayLimit);
 
-    // 3. Kelompokkan berdasarkan Tanggal
-    const grouped = visiblePhotos.reduce((acc, photo) => {
-      if (!acc[photo.dateStr]) acc[photo.dateStr] = [];
-      acc[photo.dateStr].push(photo);
+    const grouped = visiblePosts.reduce((acc, post) => {
+      if (!acc[post.monthYear]) acc[post.monthYear] = [];
+      acc[post.monthYear].push(post);
       return acc;
     }, {});
 
-    // 4. Susun HTML
     let html = '';
-    for (const [date, photos] of Object.entries(grouped)) {
+    for (const [monthYear, posts] of Object.entries(grouped)) {
       html += `<div class="gallery-section reveal">`;
-      html += `<h3 class="gallery-date-title">${date}</h3>`;
+      html += `<h3 class="gallery-date-title">${monthYear}</h3>`;
       html += `<div class="gallery-grid">`;
       
-      photos.forEach(p => {
+      posts.forEach(p => {
+        const coverImg = p.images[0];
+        // Simpan data post ke dataset
+        const postData = JSON.stringify({
+          title: p.title,
+          dateStr: p.dateStr,
+          author: p.author,
+          images: p.images
+        }).replace(/"/g, '&quot;');
+        
         html += `
-          <div class="gallery-card" data-src="${p.img}">
-            <img src="${p.img}" alt="${p.title}" loading="lazy">
+          <div class="gallery-card gallery-card--post" data-post="${postData}">
+            <img src="${coverImg}" alt="${p.title}" loading="lazy">
             <div class="gallery-card__overlay">
               <span class="gallery-card__title">${p.title}</span>
+              <span class="gallery-card__count">${p.images.length} Foto</span>
             </div>
           </div>
         `;
       });
 
-      html += `</div></div>`; // Tutup grid & section
+      html += `</div></div>`;
     }
 
     container.innerHTML = html;
-
-    // 5. Tampilkan/Sembunyikan Tombol Load More
     loadBtn.style.display = (filtered.length > displayLimit) ? 'inline-flex' : 'none';
 
-    // 6. Pasang Event Lightbox
-    container.querySelectorAll('.gallery-card').forEach(card => {
+    // Event Listener buka Album
+    container.querySelectorAll('.gallery-card--post').forEach(card => {
       card.addEventListener('click', () => {
-        lbImg.src = card.dataset.src;
-        lb.classList.add('is-open');
+        const post = JSON.parse(card.dataset.post);
+        openAlbum(post);
       });
     });
 
-    // 7. Trigger Animasi
     setTimeout(() => {
       container.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in'));
     }, 50);
   };
 
-  // --- LOAD DATA ---
+  // --- LOGIKA ALBUM MODAL (LEVEL 2) ---
+  const openAlbum = (post) => {
+    albumTitle.textContent = post.title;
+    
+    // Tampilkan Tanggal & Author
+    let metaText = post.dateStr;
+    if (post.author) metaText += ` • Oleh: ${post.author}`;
+    albumMeta.textContent = metaText;
+
+    albumGrid.innerHTML = post.images.map((imgUrl, index) => `
+      <img src="${imgUrl}" alt="Foto Kegiatan" loading="lazy" data-index="${index}">
+    `).join('');
+
+    // Simpan state gambar saat ini
+    currentImages = post.images;
+
+    // Klik foto -> Buka Fullscreen
+    albumGrid.querySelectorAll('img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentImageIndex = parseInt(img.dataset.index);
+        showLightboxImage();
+        lb.classList.add('is-open');
+      });
+    });
+
+    albumModal.classList.add('is-open');
+    document.body.style.overflow = 'hidden'; // Cegah scroll body
+  };
+
+  // --- LOGIKA LIGHTBOX (LEVEL 3) ---
+  const showLightboxImage = () => {
+    if (currentImages.length > 0 && currentImages[currentImageIndex]) {
+      lbImg.src = currentImages[currentImageIndex];
+    }
+  };
+
+  const nextImage = () => {
+    if (currentImages.length > 0) {
+      currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+      showLightboxImage();
+    }
+  };
+
+  const prevImage = () => {
+    if (currentImages.length > 0) {
+      currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+      showLightboxImage();
+    }
+  };
+
+  // --- LOAD DATA DARI BLOGGER ---
   const loadData = async () => {
     try {
-      const res = await BloggerAPI.posts({ labels: 'galeri', maxResults: 60, fetchBodies: true });
+      const res = await BloggerAPI.posts({ labels: 'galeri', maxResults: 100, fetchBodies: true });
       const posts = res.items || [];
+      
       if (posts.length === 0) throw new Error("Kosong");
 
-      allPhotos = posts.map(p => {
+      allPosts = posts.map(p => {
         const d = new Date(p.published);
+        const monthYear = d.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+        const dateStr = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
         return {
+          id: p.id,
           title: p.title,
-          dateStr: d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
-          img: BloggerAPI.firstImage(p)
+          monthYear: monthYear,
+          dateStr: dateStr,
+          author: p.author?.displayName || 'Admin GRRM',
+          images: extractImages(p.content)
         };
-      });
+      }).filter(p => p.images.length > 0);
+
     } catch (err) {
       console.warn("Menggunakan data dummy galeri.");
-      allPhotos = dummyPhotos;
+      const now = new Date();
+      const monthYear = now.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+      const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      
+      allPosts = [
+        {
+          id: 'dummy1',
+          title: 'Kegiatan Masjid Al-Hikmah Sukorejo',
+          monthYear: monthYear,
+          dateStr: dateStr,
+          author: 'Admin GRRM',
+          images: ['assets/img/slide-1.webp', 'assets/img/slide-2.webp', 'assets/img/slide-3.webp']
+        }
+      ];
     }
     render();
   };
 
   // --- EVENT LISTENERS ---
-
-  // Pencarian
   search?.addEventListener('input', (e) => {
     searchQuery = e.target.value.toLowerCase();
-    displayLimit = 12; // Reset limit saat mencari
+    displayLimit = 6; 
     render();
   });
 
-  // Muat Lebih Banyak
   loadBtn?.addEventListener('click', () => {
-    displayLimit += 12;
+    displayLimit += 6;
     render();
   });
 
   // Tutup Lightbox
   const closeLb = () => lb?.classList.remove('is-open');
   lbClose?.addEventListener('click', closeLb);
-  lb?.addEventListener('click', (e) => {
-    if (e.target === lb) closeLb(); // Hanya tutup jika klik background
-  });
+  lb?.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+
+  // Navigasi Lightbox (Klik)
+  lbPrev?.addEventListener('click', (e) => { e.stopPropagation(); prevImage(); });
+  lbNext?.addEventListener('click', (e) => { e.stopPropagation(); nextImage(); });
+
+  // Tutup Album Modal
+  const closeAlbum = () => {
+    albumModal.classList.remove('is-open');
+    document.body.style.overflow = ''; 
+  };
+  albumClose?.addEventListener('click', closeAlbum);
+  albumModal?.addEventListener('click', (e) => { if (e.target === albumModal) closeAlbum(); });
+
+  // Navigasi Keyboard (Escape, Kiri, Kanan)
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLb();
+    if (e.key === 'Escape') {
+      if (lb.classList.contains('is-open')) closeLb();
+      else if (albumModal.classList.contains('is-open')) closeAlbum();
+    }
+    if (lb.classList.contains('is-open')) {
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    }
   });
 
-  // Jalankan
   loadData();
 })();
