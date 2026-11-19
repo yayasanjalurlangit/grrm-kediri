@@ -111,7 +111,7 @@
     
     // Tampilkan Tanggal & Author
     let metaText = post.dateStr;
-    if (post.author) metaText += ` • Oleh: ${post.author}`;
+    if (post.author) metaText += ` • Oleh: Gerakan Resik Resik Masjid Kediri`;
     albumMeta.textContent = metaText;
 
     albumGrid.innerHTML = post.images.map((imgUrl, index) => `
